@@ -24,6 +24,11 @@ export class ConfigsController {
     return this.configsService.findAllActivated();
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Config> {
+    return this.configsService.findOne(+id);
+  }
+
   @Get('user/:userId')
   getConfigsByUserId(@Param('userId') userId: string): Promise<Config[]> {
     return this.configsService.getConfigsByUserId(+userId);

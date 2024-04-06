@@ -3,5 +3,5 @@
 </script>
 
 <div class="flex h-screen flex-col">
-	<Navbar section="Dashboard"></Navbar>
+	<Navbar section="Home"></Navbar>
 </div>

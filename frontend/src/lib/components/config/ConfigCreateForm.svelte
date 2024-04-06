@@ -41,53 +41,53 @@
 	</Form.Field>
 
 	<div class="flex flex-row justify-between">
-		<Form.Field {form} name="min_transaction_amount" class="mr-2">
+		<Form.Field {form} name="minTransactionAmount" class="mr-2">
 			<Form.Control let:attrs>
 				<Form.Label>Min. Transaction Amount</Form.Label>
-				<Input {...attrs} bind:value={$formData.min_transaction_amount} class="mb-2" />
+				<Input {...attrs} bind:value={$formData.minTransactionAmount} class="mb-2" />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
-		<Form.Field {form} name="max_transaction_amount">
+		<Form.Field {form} name="maxTransactionAmount">
 			<Form.Control let:attrs>
 				<Form.Label>Max. Transaction Amount</Form.Label>
-				<Input {...attrs} bind:value={$formData.max_transaction_amount} class="mb-2" />
+				<Input {...attrs} bind:value={$formData.maxTransactionAmount} class="mb-2" />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 	</div>
 
 	<div class="flex flex-row justify-between">
-		<Form.Field {form} name="min_transaction_risc" class="mr-2">
+		<Form.Field {form} name="minTransactionRisc" class="mr-2">
 			<Form.Control let:attrs>
 				<Form.Label>Min. Transaction Risc</Form.Label>
-				<Input {...attrs} bind:value={$formData.min_transaction_risc} class="mb-2" />
+				<Input {...attrs} bind:value={$formData.minTransactionRisc} class="mb-2" />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
-		<Form.Field {form} name="max_transaction_risc">
+		<Form.Field {form} name="maxTransactionRisc">
 			<Form.Control let:attrs>
 				<Form.Label>Max. Transaction Risc</Form.Label>
-				<Input {...attrs} bind:value={$formData.max_transaction_risc} class="mb-2" />
+				<Input {...attrs} bind:value={$formData.maxTransactionRisc} class="mb-2" />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 	</div>
 
-	<Form.Field {form} name="max_number_of_transactions">
+	<Form.Field {form} name="maxNumberOfTransactions">
 		<Form.Control let:attrs>
 			<Form.Label>Max. Number of Transaction</Form.Label>
-			<Input {...attrs} bind:value={$formData.max_number_of_transactions} class="mb-2" />
+			<Input {...attrs} bind:value={$formData.maxNumberOfTransactions} class="mb-2" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="lookahead_hours">
+	<Form.Field {form} name="lookaheadHours">
 		<Form.Control let:attrs>
 			<Form.Label>Lookahead Hours</Form.Label>
-			<Input {...attrs} bind:value={$formData.lookahead_hours} class="mb-2" />
+			<Input {...attrs} bind:value={$formData.lookaheadHours} class="mb-2" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>

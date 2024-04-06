@@ -1,8 +1,8 @@
 module.exports.makeTransaction = async (
   inputAmount,
   type,
-  userID,
-  configID
+  user,
+  config
 ) => {
   try {
     const response = await fetch("http://backend-app:3000/transactions/", {
@@ -10,8 +10,8 @@ module.exports.makeTransaction = async (
       body: JSON.stringify({
         inputAmount,
         type,
-        userID,
-        config: { id: configID },
+        user,
+        config,
       }),
       headers: { "Content-Type": "application/json" },
     });

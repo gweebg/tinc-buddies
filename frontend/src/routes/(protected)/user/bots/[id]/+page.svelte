@@ -26,10 +26,18 @@
 
 	export let data: PageData;
 
-	const { config } = data;
+	const { config, tx } = data;
+	console.log(config, tx);
+
+	const filterFields = ['id', 'activated', 'created_at', 'updated_at'];
+	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
 
 	const back = () => {
 		goto('/user/bots');
+	};
+
+	const edit = () => {
+		goto(`/user/bots/${config.id}/edit`);
 	};
 
 	const carouselOptions: CarouselOptions = {
@@ -134,13 +142,13 @@
 			<Card.Header>
 				<div class="flex flex-row justify-between">
 					<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Configuration</h1>
-					<Button class="gap-2" size="sm">
+					<Button class="gap-2" size="sm" on:click={edit}>
 						<Pencil strokeWidth={1.5} size={20} /> Edit
 					</Button>
 				</div>
 			</Card.Header>
 			<Card.Content>
-				{#each Object.entries(config) as [key, value]}
+				{#each filteredConfig as [key, value]}
 					<div class="mb-2 flex flex-row gap-2">
 						<div class="flex w-full max-w-sm flex-col gap-1.5">
 							<Label for={key}>
