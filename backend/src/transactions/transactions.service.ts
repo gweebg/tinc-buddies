@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccountsService } from 'src/accounts/accounts.service';
 import { ConfigsService } from 'src/configs/configs.service';
 import { Repository } from 'typeorm';
 import { Transaction } from './transactions.entity';
