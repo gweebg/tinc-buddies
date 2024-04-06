@@ -36,6 +36,10 @@
 		goto('/user/bots');
 	};
 
+	const edit = () => {
+		goto(`/user/bots/${config.id}/edit`);
+	};
+
 	const carouselOptions: CarouselOptions = {
 		loop: true
 	};
@@ -138,7 +142,7 @@
 			<Card.Header>
 				<div class="flex flex-row justify-between">
 					<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Configuration</h1>
-					<Button class="gap-2" size="sm">
+					<Button class="gap-2" size="sm" on:click={edit}>
 						<Pencil strokeWidth={1.5} size={20} /> Edit
 					</Button>
 				</div>
