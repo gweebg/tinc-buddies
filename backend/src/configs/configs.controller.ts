@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { ConfigsService } from './configs.service';
 import { Config } from './configs.entity';
 
@@ -9,6 +17,11 @@ export class ConfigsController {
   @Post()
   create(@Body() configData: Config): Promise<Config> {
     return this.configsService.create(configData);
+  }
+
+  @Get()
+  findAll(): Promise<Config[]> {
+    return this.configsService.findAllActivated();
   }
 
   @Get('user/:userId')
@@ -35,5 +48,4 @@ export class ConfigsController {
   remove(@Param('id') id: string): Promise<void> {
     return this.configsService.remove(+id);
   }
-
 }

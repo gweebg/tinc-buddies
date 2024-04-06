@@ -14,6 +14,10 @@ export class ConfigsService {
     return this.configsRepository.find();
   }
 
+  findAllActivated(): Promise<Config[]> {
+    return this.configsRepository.find({ where: { activated: true } });
+  }
+
   findOne(id: number): Promise<Config | null> {
     return this.configsRepository.findOneBy({ id });
   }

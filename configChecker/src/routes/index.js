@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var cron = require("node-cron");
+const { getActiveConfigs } = require("../controllers/configs");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  res.send("Welcome to the config checker service");
 });
 
 router.post("/add_config", function (req, res, next) {
@@ -27,8 +28,15 @@ router.delete("/delete_config/:id", function (req, res, next) {
   res.send("Config deleted successfully " + req.params.id);
 });
 
-cron.schedule(" */2 * * * * *", () => {
+const dummyData = {
+  price: 100,
+};
+
+cron.schedule(" */2 * * * * *", async () => {
   console.log("A cron job that runs every 2 seconds");
+  console.log(dummyData);
+  const configs = await getActiveConfigs();
+  console.log(configs);
 });
 
 module.exports = router;
