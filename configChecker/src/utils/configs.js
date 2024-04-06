@@ -23,8 +23,8 @@ module.exports.handleLogic = (config, tinkerData) => {
   let action = tinkerData.up ? "buy" : "sell";
   let amount =
     (action === "buy"
-      ? Math.min(config.maxTransactionAmount, config.balanceUSD)
-      : config.balanceBTC) * config.trust;
+      ? Math.min(config.maxTransactionAmount, config.budget)
+      : config.acquire) * tinkerData.trust;
 
   const lookAheadHoursPredictions = tinkerData.predictions
     .splice(0, config.lookAheadHours)
