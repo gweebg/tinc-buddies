@@ -6,7 +6,7 @@ const { fetchTinkerData } = require("../controllers/tinker");
 
 /* GET home page. */
 
-cron.schedule(" */2 * * * * *", async () => {
+cron.schedule(" */30 * * * * *", async () => {
   console.log("A cron job that runs every 2 seconds");
   const tinkerData = await fetchTinkerData();
   const configs = await fetchActiveConfigs();
