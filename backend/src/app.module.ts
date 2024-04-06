@@ -22,7 +22,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     ScheduleModule.forRoot(),
 
-
     // Local modules
     AccountsModule,
   ],
