@@ -10,10 +10,11 @@ const fetchConfigs = async (): Promise<ConfigSchema[]> => {
 	let response;
 	try {
 		response = await fetch(API_URL + '/configs');
+		return await response.json();
 	} catch (err) {
+		console.log(err);
 		return [];
 	}
-	return await response.json();
 };
 
 const createConfig = async (
