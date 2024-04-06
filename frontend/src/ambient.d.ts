@@ -1,10 +1,19 @@
 type Sections = Record<string, string>;
 
-interface BotData {
-	id: string;
+interface ConfigSchema {
+	id: number;
+	user: number;
+
 	name: string;
 	description: string;
-	state: boolean;
-	owner: string;
-	updated_at: string;
+
+	max_transaction_amount: number;
+	min_transaction_amount: number;
+	max_number_of_transactions: number;
+	min_number_of_transactions: number;
+	min_transaction_risc: number;
+	max_transaction_risc: number;
+	lookahead_hours: number;
+
+	activated: boolean
 }

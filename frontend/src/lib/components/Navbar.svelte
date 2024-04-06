@@ -15,7 +15,7 @@
 	};
 
 	const redirectGithub = () => {
-		window.open('https://github.com/gweebg/enemyless', '_blank');
+		window.open('https://github.com/gweebg/tinc-buddy', '_blank');
 	};
 </script>
 

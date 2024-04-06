@@ -4,7 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { CircleDot } from 'lucide-svelte';
 
-	export let bot: BotData;
+	export let config: ConfigSchema;
 
 	const activeState = {
 		message: 'ACTIVE',
@@ -22,18 +22,18 @@
 <div
 	class="hover:cursor-pointer"
 	on:click={() => {
-		goto(`/user/bots/${bot.id}`);
+		goto(`/user/bots/${config.id}`);
 	}}
 >
 	<Card.Root class="w-full">
 		<Card.Header>
 			<div class="flex flex-row items-center justify-between">
 				<div class="space-y-1">
-					<Card.Title>{bot.name}</Card.Title>
-					<Card.Description>{bot.description}</Card.Description>
+					<Card.Title>{config.name}</Card.Title>
+					<Card.Description>{config.description}</Card.Description>
 				</div>
 				<div class="flex flex-row items-center gap-2">
-					{#if bot.state}
+					{#if config.activated}
 						<span class="text-muted-foreground ml-4 text-balance text-sm tracking-tight"
 							>{activeState.message}</span
 						>
@@ -49,10 +49,12 @@
 		</Card.Header>
 		<Card.Footer class="flex items-end justify-between">
 			<p class="text-muted-foreground text-balance text-sm tracking-tight">
-				<!-- Running since 30 Jun 2021 at 20:00:00 PST -->
-				Last updated at {bot.updated_at}
+				 Running since 30 Jun 2021 at 20:00:00 PST
+				<!-- Last updated at {config.updated_at} -->
 			</p>
-			<Button size="sm">Stop</Button>
+			<span on:click|stopPropagation>
+				<Button size="sm">Stop</Button>
+			</span>
 		</Card.Footer>
 	</Card.Root>
 </div>
