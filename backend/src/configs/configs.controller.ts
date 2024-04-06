@@ -16,13 +16,21 @@ export class ConfigsController {
     return this.configsService.getConfigsByUserId(+userId);
   }
 
-  // Update config
   @Put(':id')
   update(@Param('id') id: string, @Body() configData: Config): Promise<Config> {
     return this.configsService.update(+id, configData);
   }
 
-  // Delete config
+  @Put('activate/:id')
+  activate(@Param('id') id: string): Promise<Config> {
+    return this.configsService.activate(+id);
+  }
+
+  @Put('deactivate/:id')
+  deactivate(@Param('id') id: string): Promise<Config> {
+    return this.configsService.deactivate(+id);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.configsService.remove(+id);
