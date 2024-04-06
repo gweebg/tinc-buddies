@@ -25,4 +25,16 @@ export class AccountsService {
   async create(user: User): Promise<User> {
     return this.usersRepository.save(user);
   }
+
+  async deposit(userId: number, ammount: number): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    user.balance += ammount;
+    return this.usersRepository.save(user);
+  }
+
+  async withdraw(userId: number, ammount: number): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    user.balance -= ammount;
+    return this.usersRepository.save(user);
+  }
 }
