@@ -20,6 +20,13 @@ export class Config {
   description: string;
 
   @Column(
+  )
+  allocadedBudget: number;
+
+  @Column()
+  spentBudget: number;
+
+  @Column(
     {
       default: 9999
     }
@@ -39,13 +46,6 @@ export class Config {
     }
   )
   maxNumberOfTransactions: number;
-
-  @Column(
-    {
-      default: 0
-    }
-  )
-  minNumberOfTransactions: number;
 
   @Column(
     {

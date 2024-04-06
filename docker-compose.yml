@@ -51,15 +51,17 @@ services:
     depends_on:
       - db
 
-  # frontend:
-  #   container_name: frontend-app
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   user: "node"
-  #   environment:
-  #     - NODE_ENV=production
-  #     - TZ=Pacific/Auckland
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8000:5050
+  frontend:
+    container_name: frontend-app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    user: "node"
+    environment:
+      - NODE_ENV=production
+      - TZ=Pacific/Auckland
+    restart: unless-stopped
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./frontend/src:/usr/src/app/src
