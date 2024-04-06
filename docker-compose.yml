@@ -26,7 +26,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./backend/src:/app/src
+      - ./backend/src:/usr/src/app/src
 
   pgadmin:
     image: dpage/pgadmin4
