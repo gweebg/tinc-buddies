@@ -28,7 +28,7 @@ export class Transaction {
   @Column({
     default: 0,
   })
-  outputAmmount: number;
+  outputAmount: number;
 
   @Column()
   date: Date;

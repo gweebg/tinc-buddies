@@ -23,22 +23,23 @@ export class TransactionsService {
   }
 
   async create(transaction: Transaction): Promise<Transaction> {
-    transaction.outputAmmount = Number(
+    transaction.outputAmount = Number(
       (
-        transaction.outputAmmount / Number(GlobalService.getBTCPrice().bid)
+        transaction.inputAmount / Number(GlobalService.getBTCPrice().bid)
       ).toFixed(8),
     );
+
     this.configService.findOne(transaction.config.id).then((config) => {
       transaction.type === TransactionType.BUY
         ? this.configService.spentBudget(
             config.id,
-            transaction.inputAmmount,
-            transaction.outputAmmount,
+            transaction.inputAmount,
+            transaction.outputAmount,
           )
         : this.configService.releaseBudget(
             config.id,
-            transaction.inputAmmount,
-            transaction.outputAmmount,
+            transaction.inputAmount,
+            transaction.outputAmount,
           );
     });
     return this.transactionsRepository.save(transaction);

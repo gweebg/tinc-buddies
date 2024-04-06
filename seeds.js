@@ -34,7 +34,6 @@ fetch("http://localhost:3000/transactions", {
     userID: 1,
     configID: 10,
     inputAmount: 100,
-    outputAmount: 100,
     type: "BUY",
   }),
 });
