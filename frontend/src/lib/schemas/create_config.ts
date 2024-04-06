@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const createConfigSchema = z.object({
-	userID: z.number(),
+	user: z.number(),
 	name: z.string().min(2).max(50),
 	description: z.string().max(200).optional(),
 
