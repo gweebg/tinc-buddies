@@ -5,11 +5,18 @@ module.exports.makeTransaction = async (
   configID
 ) => {
   try {
-    await fetch("http://backend-app:3000/transactions/", {
+    const response = await fetch("http://backend-app:3000/transactions/", {
       method: "POST",
-      body: JSON.stringify({ inputAmount, type, userID, configID }),
+      body: JSON.stringify({
+        inputAmount,
+        type,
+        userID,
+        config: { id: configID },
+      }),
       headers: { "Content-Type": "application/json" },
     });
+    const json = await response.json();
+    console.log(json);
   } catch (error) {
     return { error: error.message };
   }
