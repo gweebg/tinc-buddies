@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { TransactionStatus } from './transactions.enum';
+import { TransactionStatus, TransactionType } from './transactions.enum';
 import { User } from 'src/accounts/accounts.entity';
+import { Config } from 'src/configs/configs.entity';
 
 
 
@@ -13,17 +14,19 @@ export class Transaction {
   @JoinColumn()
   user: User;
 
+  @OneToOne(() => Config)
+  @JoinColumn()
+  config: Config;
+
   @Column()
   inputAmmount: number;
 
-  @Column()
-  inputCurrency: string;
-
-  @Column()
+  @Column(
+    {
+      default: 0
+    }
+  )
   outputAmmount: number;
-
-  @Column()
-  outputCurrency: string;
 
   @Column()
   date: Date;
@@ -36,5 +39,14 @@ export class Transaction {
     }
   )
   status: TransactionStatus;
+
+  @Column(
+    {
+      type: 'enum',
+      enum: TransactionType,
+    }
+  )
+  type: TransactionType;
+
 
 }

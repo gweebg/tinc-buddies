@@ -1,4 +1,9 @@
 const { makeTransaction } = require("./transactions");
+const {
+  validateNTransaction,
+  validateRisk,
+  handleLogic,
+} = require("../utils/configs");
 
 module.exports.getActiveConfigs = async () => {
   try {
@@ -10,25 +15,29 @@ module.exports.getActiveConfigs = async () => {
   }
 };
 
-module.exports.handleConfig = async (config, tinkerData, userData) => {
+module.exports.handleConfig = async (config, tinkerData) => {
   try {
+    if (config.balance === 0 || !validateRisk(config, tinkerData))
+      return [0, "none"];
+
+    const transactionsResponse = await fetch(
+      "http://backend-app:3000/transactions/config/" + config.id
+    );
+    const configTransactions = await transactionsResponse.json();
+
+    if (!validateNTransaction(config, configTransactions)) return [0, "none"];
+
+    console.log(configTransactions);
     //logic
+    const [inputAmount, type] = handleLogic(
+      config,
+      tinkerData,
+      configTransactions
+    );
 
-    makeTransaction();
-    return 2;
-  } catch (error) {
-    return { error: error.message };
-  }
-};
-
-module.exports.handleUserConfigs = async (configs, tinkerData) => {
-  try {
-    const response = await fetch("http://backend-app:3000/");
-    const userData = await response.json();
-    for (const config of configs) {
-      const amountSpent = await this.handleConfig(config, tinkerData, userData);
-      userData.balance -= amountSpent;
-    }
+    if (type !== "none")
+      makeTransaction(inputAmount, type, config.userID, config.id);
+    return [inputAmount, type];
   } catch (error) {
     return { error: error.message };
   }

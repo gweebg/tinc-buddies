@@ -6,7 +6,7 @@ import { GlobalService } from 'src/utils/global.service';
 @Injectable()
 export class WrapperService {
   updateBTCPrice = async () => {
-    const response = await fetch('https://api.uphold.com/v0/ticker/BTCEUR');
+    const response = await fetch('https://api.uphold.com/v0/ticker/BTCUSD');
     const json: BTCPrice = await response.json();
     GlobalService.setBTCPrice(json);
   };
