@@ -1,19 +1,26 @@
-import pickle
 import time
 import threading
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-
+import joblib
+from keras.models import load_model
+import pandas as pd
+import ast
+   
 class Tinker(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
         self.running = True
 
-        # Load ML model
-        with open('model/linear_regression.pkl', 'rb') as f:
-            self.model = pickle.load(f)
+        # Load ML model and scaler
+        self.model_loaded = load_model('lstm_model.keras')
+        self.scaler_loaded = joblib.load('scaler.save')
+
+        with open('first_vals.txt', 'r') as f:
+            first_vals_file = f.read()
+        self.first_vals = pd.DataFrame(ast.literal_eval(first_vals_file))
     
     def get_price(self):
         return self.current_price

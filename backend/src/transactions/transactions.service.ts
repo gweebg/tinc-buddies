@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Transaction } from './transactions.entity';
 import { TransactionType } from 'src/transactions/transactions.enum';
 import { GlobalService } from 'src/utils/global.service';
+import {TransactionStatus} from './transactions.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -30,18 +31,24 @@ export class TransactionsService {
     );
     transaction.date = new Date();
 
-    this.configService.findOne(transaction.config.id).then((config) => {
-      transaction.type === TransactionType.BUY
-        ? this.configService.spentBudget(
-            config.id,
-            transaction.inputAmount,
-            transaction.outputAmount,
-          )
-        : this.configService.releaseBudget(
-            config.id,
-            transaction.inputAmount,
-            transaction.outputAmount,
-          );
+    this.configService.findOne(transaction.config.id).then(async (config) => {
+      try {
+        transaction.type === TransactionType.BUY
+          ? await this.configService.spentBudget(
+              config.id,
+              transaction.inputAmount,
+              transaction.outputAmount,
+            )
+          : await this.configService.releaseBudget(
+              config.id,
+              transaction.inputAmount,
+              transaction.outputAmount,
+            );
+            transaction.status = TransactionStatus.APPROVED;
+      }
+      catch (e) {
+        transaction.status = TransactionStatus.DECLINED;
+      }
     });
     return this.transactionsRepository.save(transaction);
   }

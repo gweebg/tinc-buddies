@@ -55,6 +55,9 @@ export class ConfigsService {
 
   async spentBudget(id: number, spent: number, bouth: number): Promise<Config> {
     const config = await this.findOne(id);
+    if (config.budget < spent) {
+      throw new Error('Not enough budget');
+    }
     config.budget -= spent;
     config.acquired += bouth;
     return this.configsRepository.save(config);
@@ -66,6 +69,9 @@ export class ConfigsService {
     earned: number,
   ): Promise<Config> {
     const config = await this.findOne(id);
+    if (config.acquired < sold) {
+      throw new Error('Not enough acquired');
+    }
     config.budget += earned;
     config.acquired -= sold;
     return this.configsRepository.save(config);

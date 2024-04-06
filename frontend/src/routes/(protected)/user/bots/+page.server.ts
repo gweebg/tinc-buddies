@@ -25,7 +25,7 @@ const createConfig = async (
 		Object.entries(formData.data).filter(([_, value]) => value !== undefined)
 	);
 
-	data.userID = 1;
+	data.user = 1;
 
 	try {
 		const response = await fetch(API_URL + '/configs', {

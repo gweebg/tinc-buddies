@@ -10,7 +10,8 @@ const seeds = async () => {
         balance: 200,
       }),
     });
-
+    
+    console.log("Seeding data");
     resUser.ok
       ? console.log("User successful")
       : console.log("User not created");
@@ -21,9 +22,9 @@ const seeds = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: "million dollar baby",
-        description: "Lots of money ba by",
-        userID: 1,
+        name: "million dollar baby321",
+        description: "Lots of money ba by312",
+        user : 11,
         acquired: 100,
         budget: 100,
         activated: true,
@@ -34,14 +35,14 @@ const seeds = async () => {
       ? console.log("Config successful")
       : console.log("Config not created");
 
-    const resTxns = await fetch("http://localhost:3000/transactions", {
+    const resTxns = await fetch("http://127.0.0.1:3000/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userID: 1,
-        config: { id: 10 },
+        user: 11,
+        config: 1,
         inputAmount: 100,
         type: "BUY",
       }),
