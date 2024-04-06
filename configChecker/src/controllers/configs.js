@@ -1,5 +1,9 @@
 const { makeTransaction } = require("./transactions");
-const { validateNTransaction, validateRisk } = require("../utils/configs");
+const {
+  validateNTransaction,
+  validateRisk,
+  handleLogic,
+} = require("../utils/configs");
 
 module.exports.getActiveConfigs = async () => {
   try {
@@ -13,24 +17,27 @@ module.exports.getActiveConfigs = async () => {
 
 module.exports.handleConfig = async (config, tinkerData) => {
   try {
-    if (config.balance === 0 || !validateRisk(config, tinkerData)) {
-      return 0;
-    }
+    if (config.balance === 0 || !validateRisk(config, tinkerData))
+      return [0, "none"];
 
     const transactionsResponse = await fetch(
       "http://backend-app:3000/transactions/config/" + config.id
     );
     const configTransactions = await transactionsResponse.json();
 
-    if (!validateNTransaction(config, configTransactions)) return 0;
+    if (!validateNTransaction(config, configTransactions)) return [0, "none"];
 
     console.log(configTransactions);
     //logic
-    const [inputAmount, type] = handleLogic();
+    const [inputAmount, type] = handleLogic(
+      config,
+      tinkerData,
+      configTransactions
+    );
 
-    if (inputAmount > 0)
+    if (type !== "none")
       makeTransaction(inputAmount, type, config.userID, config.id);
-    return inputAmount;
+    return [inputAmount, type];
   } catch (error) {
     return { error: error.message };
   }

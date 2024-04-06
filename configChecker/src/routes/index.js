@@ -7,6 +7,13 @@ const { getActiveConfigs, handleConfig } = require("../controllers/configs");
 
 const dummyData = {
   price: 100,
+  up: true,
+  trust: 0.9,
+  volitity: 0.1,
+  prediction: [
+    100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 100, 101, 102,
+    103, 104, 105, 106, 107, 108, 109, 110, 111,
+  ],
 };
 
 cron.schedule(" */2 * * * * *", async () => {
