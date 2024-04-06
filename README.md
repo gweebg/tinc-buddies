@@ -1,3 +1,3 @@
 # TINC-BUDDY
 
-Your personal trading buddy.
+Your personal trading buddy
