@@ -7,8 +7,8 @@ module.exports.validateNTransaction = async (config, transactionsHistory) => {
 
 module.exports.validateRisk = async (config, tinkerData) => {
   return (
-    config.minTransactionRisk < tinkerData.risk &&
-    tinkerData.risk < config.maxTransactionRisk
+    config.minTransactionRisk < tinkerData.volatility &&
+    tinkerData.volatility < config.maxTransactionRisk
   );
 };
 
