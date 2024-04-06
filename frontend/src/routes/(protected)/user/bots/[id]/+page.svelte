@@ -5,14 +5,20 @@
 
 	import { Button } from '$lib/components/ui/button';
 	import {
+		ArrowDown,
 		ArrowLeftRight,
+		ArrowUp,
+		ArrowUpNarrowWide,
 		ChevronLeft,
+		CircleDot,
+		Clock,
 		DollarSign,
 		Handshake,
 		Pause,
 		Pencil,
 		PiggyBank,
 		Play,
+		Sun,
 		Trash
 	} from 'lucide-svelte';
 
@@ -23,11 +29,12 @@
 
 	import { toTitle } from '$lib/utils/text';
 	import type { CarouselOptions } from '$lib/components/ui/carousel/context';
+	import Transaction from '$lib/components/config/Transaction.svelte';
 
 	export let data: PageData;
 
-	const { config, tx } = data;
-	console.log(config, tx);
+	const { config, transactions } = data;
+	console.log(config, transactions);
 
 	const back = () => {
 		goto('/user/bots');
@@ -159,25 +166,13 @@
 				<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Transaction History</h1>
 			</Card.Header>
 			<Card.Content class="flex flex-col gap-2 ">
-				<Card.Root>
-					<Card.Header class="flex flex-row items-center justify-between space-x-2 p-2">
-						<div class="flex flex-row gap-2">
-							<PiggyBank class="h-6 w-6" strokeWidth={1.5} />
-							<Card.Title class="text-md">Traded for 452 USD</Card.Title>
-						</div>
-						<span class="text-muted-foreground pb-1 text-xs"> 2024 April 6, 14:34 </span>
-					</Card.Header>
-				</Card.Root>
+				{#if transactions.length === 0}
+					<h2>No transactions have been made by this buddy.</h2>
+				{/if}
 
-				<Card.Root>
-					<Card.Header class="flex flex-row items-center justify-between p-2">
-						<div class="flex flex-row gap-2">
-							<Handshake class="h-6 w-6" strokeWidth={1.5} />
-							<Card.Title class="text-md">Sold 0.001 BTC</Card.Title>
-						</div>
-						<span class="text-muted-foreground pb-1 text-xs"> 2024 April 6, 14:34 </span>
-					</Card.Header>
-				</Card.Root>
+				{#each transactions as transaction}
+					<Transaction tx={transaction} />
+				{/each}
 			</Card.Content>
 		</Card.Root>
 	</div>

@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 const fetchConfig = async (id: number): Promise<ConfigSchema | undefined> => {
 	let response;
 	try {
-		response = await fetch(API_URL + '/config/' + id);
+		response = await fetch(API_URL + '/configs/' + id);
 
 		if (!response.ok) {
 			console.error(response);
@@ -49,8 +49,27 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(404);
 	}
 
+	// [
+	// 	{
+	// 		type: 'buy',
+	// 		inputAmount: 300,
+	// 		outputAmount: 0.001,
+	// 		date: 'April 6 2024, 14:34:51 GMT',
+	// 		config: 1,
+	// 		status: 'completed'
+	// 	},
+	// 	{
+	// 		type: 'sell',
+	// 		inputAmount: 0.1,
+	// 		outputAmount: 10000,
+	// 		date: 'April 6 2024, 19:34:51 GMT',
+	// 		config: 1,
+	// 		status: 'pending'
+	// 	}
+	// ]
+
 	return {
 		config: config,
-		tx: tx
+		transactions: tx
 	};
 };
