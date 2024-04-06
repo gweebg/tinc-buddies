@@ -34,4 +34,16 @@ export class ConfigsService {
   async create(config: Config): Promise<Config> {
     return this.configsRepository.save(config);
   }
+
+  async activate(id: number): Promise<Config> {
+    const config = await this.findOne(id);
+    config.activated = true;
+    return this.configsRepository.save(config);
+  }
+
+  async deactivate(id: number): Promise<Config> {
+    const config = await this.findOne(id);
+    config.activated = false;
+    return this.configsRepository.save(config);
+  }
 }
