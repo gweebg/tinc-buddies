@@ -28,6 +28,9 @@
 
 	const { config } = data;
 
+	const filterFields = ['id', 'activated', 'created_at', 'updated_at'];
+	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
+
 	const back = () => {
 		goto('/user/bots');
 	};
@@ -140,7 +143,7 @@
 				</div>
 			</Card.Header>
 			<Card.Content>
-				{#each Object.entries(config) as [key, value]}
+				{#each filteredConfig as [key, value]}
 					<div class="mb-2 flex flex-row gap-2">
 						<div class="flex w-full max-w-sm flex-col gap-1.5">
 							<Label for={key}>

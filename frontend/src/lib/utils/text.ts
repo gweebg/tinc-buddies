@@ -1,10 +1,12 @@
 export const toTitle = (text: string): string => {
+	let result = '';
+	for (const letter of text) {
+		if (letter === letter.toUpperCase()) {
+			result += ' ' + letter.toLowerCase();
+		} else {
+			result += letter;
+		}
+	}
 
-    const words = text.split('_');
-
-    if (words.length > 0) {
-        words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
-    }
-
-    return words.join(' ');
-}
+	return result[0].toUpperCase() + result.slice(1);
+};

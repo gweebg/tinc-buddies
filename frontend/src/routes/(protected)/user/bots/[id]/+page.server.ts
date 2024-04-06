@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 const fetchConfig = async (id: number): Promise<ConfigSchema | undefined> => {
 	let response;
 	try {
-		response = await fetch(API_URL + '/config/' + id);
+		response = await fetch(API_URL + '/configs/' + id);
 		return await response.json();
 	} catch (err) {
 		console.error(err);
