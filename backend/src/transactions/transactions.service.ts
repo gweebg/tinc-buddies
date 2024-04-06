@@ -18,11 +18,11 @@ export class TransactionsService {
     return this.transactionsRepository.findOneBy({ id });
   }
 
-  async remove(id: number): Promise<void> {
-    await this.transactionsRepository.delete(id);
-  }
-
   async create(Transaction: Transaction): Promise<Transaction> {
     return this.transactionsRepository.save(Transaction);
+  }
+
+  async getTransactionsByUserId(userId: number): Promise<Transaction[]> {
+    return this.transactionsRepository.find({ where: { user: { id: userId } } });
   }
 }
