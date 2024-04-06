@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccountsService } from 'src/accounts/accounts.service';
 import { ConfigsService } from 'src/configs/configs.service';
 import { Repository } from 'typeorm';
 import { Transaction } from './transactions.entity';
@@ -24,12 +23,38 @@ export class TransactionsService {
   }
 
   async create(transaction: Transaction): Promise<Transaction> {
-    transaction.outputAmmount = Number((transaction.outputAmmount / Number(GlobalService.getBTCPrice().bid)).toFixed(8));
-    this.configService.findOne(transaction.config.id).then((config) => { transaction.type === TransactionType.BUY ? this.configService.spentBudget(config.id, transaction.inputAmmount, transaction.outputAmmount) : this.configService.releaseBudget(config.id, transaction.inputAmmount, transaction.outputAmmount) });
+    transaction.outputAmount = Number(
+      (
+        transaction.inputAmount / Number(GlobalService.getBTCPrice().bid)
+      ).toFixed(8),
+    );
+    transaction.date = new Date();
+
+    this.configService.findOne(transaction.config.id).then((config) => {
+      transaction.type === TransactionType.BUY
+        ? this.configService.spentBudget(
+            config.id,
+            transaction.inputAmount,
+            transaction.outputAmount,
+          )
+        : this.configService.releaseBudget(
+            config.id,
+            transaction.inputAmount,
+            transaction.outputAmount,
+          );
+    });
     return this.transactionsRepository.save(transaction);
   }
 
   async getTransactionsByUserId(userId: number): Promise<Transaction[]> {
-    return this.transactionsRepository.find({ where: { user: { id: userId } } });
+    return this.transactionsRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
+
+  async getTransactionsByConfigId(configId: number): Promise<Transaction[]> {
+    return this.transactionsRepository.find({
+      where: { config: { id: configId } },
+    });
   }
 }

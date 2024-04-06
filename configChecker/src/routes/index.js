@@ -1,28 +1,18 @@
 var express = require("express");
 var router = express.Router();
 var cron = require("node-cron");
-const { getActiveConfigs, handleConfig } = require("../controllers/configs");
+const { fetchActiveConfigs, handleConfig } = require("../controllers/configs");
+const { fetchTinkerData } = require("../controllers/tinker");
 
 /* GET home page. */
 
-const dummyData = {
-  price: 100,
-  up: true,
-  trust: 0.9,
-  volitity: 0.1,
-  prediction: [
-    100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 100, 101, 102,
-    103, 104, 105, 106, 107, 108, 109, 110, 111,
-  ],
-};
-
-cron.schedule(" */2 * * * * *", async () => {
+cron.schedule(" */30 * * * * *", async () => {
   console.log("A cron job that runs every 2 seconds");
-  console.log(dummyData);
-  const configs = await getActiveConfigs();
+  const tinkerData = await fetchTinkerData();
+  const configs = await fetchActiveConfigs();
 
-  for (const userConfigs of configs) {
-    handleConfig(userConfigs, dummyData);
+  for (const config of configs) {
+    handleConfig(config, tinkerData);
   }
 });
 

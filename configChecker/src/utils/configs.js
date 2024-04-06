@@ -1,4 +1,5 @@
 module.exports.validateNTransaction = async (config, transactionsHistory) => {
+  console.log(transactionsHistory);
   const todayTransactions = transactionsHistory.filter((transaction) =>
     isDateToday(new Date(transaction.date))
   );
@@ -20,31 +21,33 @@ const isDateToday = (date) => {
 };
 
 module.exports.handleLogic = (config, tinkerData) => {
-  let action = tinkerData.up ? "buy" : "sell";
+  let type = tinkerData.up ? "BUY" : "SELL";
   let amount =
-    (action === "buy"
-      ? Math.min(config.maxTransactionAmount, config.balanceUSD)
-      : config.balanceBTC) * config.trust;
+    (type === "BUY"
+      ? Math.min(config.maxTransactionAmount, config.budget)
+      : config.acquire) * tinkerData.trust;
+
+  console.log(amount);
 
   const lookAheadHoursPredictions = tinkerData.predictions
     .splice(0, config.lookAheadHours)
     .unshift(tinkerData.price);
 
-  if (action === "buy") {
+  if (type === "BUY") {
     const buyIndex = checkMostProfitBuy(lookAheadHoursPredictions);
     if (buyIndex !== 0) {
-      action = "none";
+      type = "none";
       amount = 0;
     }
   } else {
     const sellIndex = checkMostProfitSell(lookAheadHoursPredictions);
     if (sellIndex !== 0) {
-      action = "none";
+      type = "none";
       amount = 0;
     }
   }
 
-  return [action, amount];
+  return { amount, type };
 };
 
 const checkMostProfitBuy = (lookAheadHoursPredictions) => {

@@ -1,8 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { TransactionRisk } from './configs.enum';
 import { User } from 'src/accounts/accounts.entity';
-
-
 
 @Entity()
 export class Config {
@@ -19,56 +23,47 @@ export class Config {
   @Column()
   description: string;
 
-  @Column(
-  )
+  @Column({ type: 'float', default: 0 })
   budget: number;
 
-  @Column()
-  aquired: number;
+  @Column({
+    default: 0,
+    type: 'float',
+  })
+  acquired: number;
 
-  @Column(
-    {
-      default: 9999
-    }
-  )
+  @Column({
+    default: 9999,
+  })
   maxTransactionAmount: number;
 
-  @Column(
-    {
-      default: 0
-    }
-  )
+  @Column({
+    default: 0,
+  })
   minTransactionAmount: number;
 
-  @Column(
-    {
-      default: 9999
-    }
-  )
+  @Column({
+    default: 9999,
+  })
   maxNumberOfTransactions: number;
 
-  @Column(
-    {
-      default: TransactionRisk.LOW
-    }
-  )
+  @Column({
+    default: TransactionRisk.LOW,
+  })
   minTransactionRisk: TransactionRisk;
 
-  @Column(
-    {
-      default: TransactionRisk.HIGH
-    }
-  )
+  @Column({
+    default: TransactionRisk.HIGH,
+  })
   maxTransactionRisk: TransactionRisk;
 
-  @Column()
+  @Column({
+    default: 24,
+  })
   lookAheadHours: number;
 
-  @Column(
-    {
-      default: false
-    }
-  )
+  @Column({
+    default: false,
+  })
   activated: boolean;
-
 }

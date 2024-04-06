@@ -39,6 +39,17 @@ services:
     volumes:
       - ./configChecker/src:/usr/src/app/src    
 
+  tinker:
+    build:
+      context: ./tinker
+      dockerfile: Dockerfile
+    container_name: tinker
+    ports:
+      - '3010:3010'
+    depends_on:
+      - app
+   
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always

@@ -39,9 +39,12 @@
 		"bits-ui": "^0.21.2",
 		"clsx": "^2.1.0",
 		"embla-carousel-svelte": "^8.0.1",
+		"formsnap": "^1.0.0",
 		"lucide-svelte": "^0.365.0",
 		"mode-watcher": "^0.3.0",
+		"sveltekit-superforms": "^2.12.2",
 		"tailwind-merge": "^2.2.2",
-		"tailwind-variants": "^0.2.1"
+		"tailwind-variants": "^0.2.1",
+		"zod": "^3.22.4"
 	}
 }
