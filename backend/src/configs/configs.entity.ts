@@ -16,6 +16,9 @@ export class Config {
   @Column()
   name: string;
 
+  @Column()
+  description: string;
+
   @Column(
     {
       default: Number.MAX_VALUE
