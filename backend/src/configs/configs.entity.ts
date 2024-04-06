@@ -21,7 +21,7 @@ export class Config {
 
   @Column(
     {
-      default: Number.MAX_VALUE
+      default: 9999
     }
   )
   maxTransactionAmount: number;
@@ -35,7 +35,7 @@ export class Config {
 
   @Column(
     {
-      default: Number.MAX_VALUE
+      default: 9999
     }
   )
   maxNumberOfTransactions: number;

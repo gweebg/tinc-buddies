@@ -4,6 +4,8 @@ import { WrapperController } from './wrapper/wrapper.controller';
 import { WrapperService } from './wrapper/wrapper.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AccountsModule } from './accounts/accounts.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { ConfigsModule } from './configs/configs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -25,8 +27,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
     // Local modules
     AccountsModule,
+    TransactionsModule,
+    ConfigsModule,
   ],
   controllers: [AppController, WrapperController],
   providers: [WrapperService],
 })
+
 export class AppModule {}
