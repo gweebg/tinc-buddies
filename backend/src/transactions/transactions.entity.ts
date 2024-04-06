@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { TransactionStatus } from './transactions.enum';
 import { User } from 'src/accounts/accounts.entity';
+import { Config } from 'src/configs/configs.entity';
 
 
 
@@ -12,6 +13,10 @@ export class Transaction {
   @OneToOne(() => User)
   @JoinColumn()
   user: User;
+
+  @OneToOne(() => Config)
+  @JoinColumn()
+  config: Config;
 
   @Column()
   inputAmmount: number;
