@@ -26,7 +26,8 @@
 
 	export let data: PageData;
 
-	const { config } = data;
+	const { config, tx } = data;
+	console.log(config, tx);
 
 	const filterFields = ['id', 'activated', 'created_at', 'updated_at'];
 	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
