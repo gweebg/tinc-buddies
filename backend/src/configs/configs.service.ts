@@ -1,15 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Config } from './configs.entity';
 import { AccountsService } from 'src/accounts/accounts.service';
+import { TransactionsService } from 'src/transactions/transactions.service';
+import { TransactionType } from 'src/transactions/transactions.enum';
 
 @Injectable()
 export class ConfigsService {
   constructor(
     @InjectRepository(Config)
     private configsRepository: Repository<Config>,
+    @Inject(forwardRef(() => AccountsService))
     private accountsService: AccountsService,
+    @Inject(forwardRef(() => TransactionsService))
+    private transactionsService: TransactionsService,
   ) {}
 
   findAll(): Promise<Config[]> {
@@ -89,5 +94,26 @@ export class ConfigsService {
     config.budget += amount;
     this.accountsService.withdraw(config.user.id, amount);
     return this.configsRepository.save(config);
+  }
+
+  async getStats(id: number): Promise<any> {
+    const transactions = await this.transactionsService.getTransactionsByConfigId(id);
+    const stats = {
+      profit: 0,
+      numberTransactions: transactions.length,
+      totalBought: 0,
+      totalSold: 0,
+    };
+
+    transactions.forEach((transaction) => {
+      if (transaction.type === TransactionType.BUY) {
+        stats.totalBought += transaction.inputAmount;
+        stats.profit -= transaction.inputAmount;
+      } else {
+        stats.totalSold += transaction.outputAmount;
+        stats.profit += transaction.inputAmount;
+      }
+    });
+    return stats;
   }
 }
