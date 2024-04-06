@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toggleMode, mode } from 'mode-watcher';
-	import { Moon, Sun, Menu } from 'lucide-svelte';
+	import { Moon, Sun, Menu, Github } from 'lucide-svelte';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
@@ -9,9 +9,9 @@
 	export let section: string;
 
 	const sections: Sections = {
-		Dashboard: '/dashboard',
-		Calendar: '/calendar',
-		Toolbox: '/toolbox'
+		Home: '/',
+		Profile: '/user',
+		Bots: '/user/bots'
 	};
 
 	const redirectGithub = () => {
@@ -37,8 +37,7 @@
 						<Sheet.Header>
 							<Sheet.Title>
 								<div class="flex items-center justify-center space-x-2">
-									<img class="h-8 w-auto" src="/logo.svg" alt="Your Company" />
-									<span class="font-bold sm:inline-block">enemyless</span>
+									<span class="font-bold sm:inline-block">tinc-buddy</span>
 								</div>
 							</Sheet.Title>
 
@@ -122,7 +121,7 @@
 				<Tooltip.Root>
 					<Tooltip.Trigger asChild let:builder>
 						<Button on:click={redirectGithub} variant="ghost" size="icon" builders={[builder]}>
-							<Sun strokeWidth={1.5} class="h-[1.2rem] w-[1.2rem]" />
+							<Github strokeWidth={1.5} class="h-[1.2rem] w-[1.2rem]" />
 						</Button>
 					</Tooltip.Trigger>
 					<Tooltip.Content>
@@ -131,7 +130,7 @@
 				</Tooltip.Root>
 
 				<Button variant="outline">
-					<p class="text-foreground hover:text-foreground/80 transition-colors">Log Out</p>
+					<p class="text-foreground hover:text-foreground/80 transition-colors">Deposit</p>
 				</Button>
 			</div>
 		</div>
