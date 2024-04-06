@@ -18,3 +18,12 @@ interface ConfigSchema {
 
 	activated: boolean;
 }
+
+interface TransactionSchema {
+	type: string;
+	inputAmount: number;
+	outputAmount: number;
+	date: string;
+	config: number;
+	status: string;
+}

@@ -26,7 +26,8 @@
 
 	export let data: PageData;
 
-	const { config } = data;
+	const { config, tx } = data;
+	console.log(config, tx);
 
 	const back = () => {
 		goto('/user/bots');
