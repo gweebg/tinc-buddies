@@ -32,7 +32,7 @@ fetch("http://localhost:3000/transactions", {
   },
   body: JSON.stringify({
     userID: 1,
-    configID: 10,
+    config: { id: 10 },
     inputAmount: 100,
     type: "BUY",
   }),

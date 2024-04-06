@@ -22,10 +22,13 @@ export class Transaction {
   @JoinColumn()
   config: Config;
 
-  @Column()
+  @Column({
+    type: 'float',
+  })
   inputAmount: number;
 
   @Column({
+    type: 'float',
     default: 0,
   })
   outputAmount: number;

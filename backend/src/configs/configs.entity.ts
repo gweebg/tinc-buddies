@@ -23,11 +23,12 @@ export class Config {
   @Column()
   description: string;
 
-  @Column({ default: 0 })
+  @Column({ type: 'float', default: 0 })
   budget: number;
 
   @Column({
     default: 0,
+    type: 'float',
   })
   acquired: number;
 

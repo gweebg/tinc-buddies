@@ -28,6 +28,7 @@ export class TransactionsService {
         transaction.inputAmount / Number(GlobalService.getBTCPrice().bid)
       ).toFixed(8),
     );
+    transaction.date = new Date();
 
     this.configService.findOne(transaction.config.id).then((config) => {
       transaction.type === TransactionType.BUY
