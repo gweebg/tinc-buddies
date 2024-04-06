@@ -15,4 +15,9 @@ export class TransactionsController {
   create(@Body() transactionData: Transaction): Promise<Transaction> {
     return this.transactionsService.create(transactionData);
   }
+
+  @Get('user/:userId')
+  getTransactionsByUserId(@Param('userId') userId: string): Promise<Transaction[]> {
+    return this.transactionsService.getTransactionsByUserId(+userId);
+  }
 }
