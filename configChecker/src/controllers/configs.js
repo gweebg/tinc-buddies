@@ -3,9 +3,10 @@ const {
   validateNTransaction,
   validateRisk,
   handleLogic,
+  getConfigs,
 } = require("../utils/configs");
 
-module.exports.getActiveConfigs = async () => {
+module.exports.fetchActiveConfigs = async () => {
   try {
     const response = await fetch("http://backend-app:3000/configs");
     const configs = await response.json();
@@ -20,10 +21,7 @@ module.exports.handleConfig = async (config, tinkerData) => {
     if (config.balance === 0 || !validateRisk(config, tinkerData))
       return [0, "none"];
 
-    const transactionsResponse = await fetch(
-      "http://backend-app:3000/transactions/config/" + config.id
-    );
-    const configTransactions = await transactionsResponse.json();
+    const configTransactions = await getConfigs();
 
     if (!validateNTransaction(config, configTransactions)) return [0, "none"];
 

@@ -47,6 +47,16 @@ module.exports.handleLogic = (config, tinkerData) => {
   return [action, amount];
 };
 
+module.exports.fetchConfigs = async () => {
+  try {
+    const response = await fetch("http://backend-app:3000/configs");
+    const configs = await response.json();
+    return configs;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 const checkMostProfitBuy = (lookAheadHoursPredictions) => {
   let totProfit = 0;
   let biggestProfitIndex = 0;
