@@ -19,14 +19,25 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend-app
-    environment:
-      - PORT=${PORT}
+
     ports:
       - '3000:3000'
     depends_on:
       - db
     volumes:
       - ./backend/src:/usr/src/app/src
+
+  config-checker:
+    build:
+      context: ./configChecker
+      dockerfile: Dockerfile
+    container_name: config-checker
+    ports:
+      - '3005:3005'
+    depends_on:
+      - app
+    volumes:
+      - ./configChecker/src:/usr/src/app/src    
 
   pgadmin:
     image: dpage/pgadmin4
