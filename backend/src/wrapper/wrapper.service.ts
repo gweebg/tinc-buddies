@@ -11,6 +11,10 @@ export class WrapperService {
     GlobalService.setBTCPrice(json);
   };
 
+  createTxn = async (txnParams) => {
+    Logger.log('Creating transaction...' + txnParams);
+  };
+
   //TODO: change time later
   @Cron(CronExpression.EVERY_10_MINUTES)
   handlecron() {
