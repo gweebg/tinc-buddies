@@ -5,18 +5,54 @@
 	import { toTitle } from '$lib/utils/text';
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import { Button } from '$lib/components/ui/button';
-	import { ChevronLeft } from 'lucide-svelte';
+	import { ChevronLeft, Save, Trash } from 'lucide-svelte';
 	import type { PageData } from '../$types';
+	import { Plus } from 'lucide-svelte';
+
 	export let data: PageData;
 
+	let possibleConfigAdd = [
+		'maxTransactionAmount',
+		'minTransactionAmount',
+		'maxNumberOfTransactions',
+		'minTransactionRisk',
+		'maxTransactionRisk',
+		'lookAheadHours',
+		'test',
+		'sadfgadfgdafgdas'
+	].filter((key) => !Object.keys(data.config).includes(key));
+
+	let newAttributes: { [key in (typeof possibleConfigAdd)[number]]: string }[] = [];
+
+	const removeAttribute = (key: string) => {
+		possibleConfigAdd.push(key);
+		possibleConfigAdd.sort();
+		if (newAttributes.find((attribute) => Object.keys(attribute).includes(key))) {
+			newAttributes = newAttributes.filter((attribute) => !Object.keys(attribute).includes(key));
+		} else {
+			changableConfig = Object.fromEntries(
+				Object.entries(changableConfig).filter(([k, _]) => k !== key)
+			) as typeof changableConfig;
+		}
+	};
+
+	const addAttribute = (key: string) => {
+		newAttributes.push({ key: key });
+		possibleConfigAdd = possibleConfigAdd.filter((k) => k !== key);
+		possibleConfigAdd.sort();
+	};
+
 	const { config } = data;
+	let changableConfig = config;
 
 	const back = () => {
 		history.back();
 	};
 
-	const filterFields = ['id', 'activated', 'created_at', 'updated_at'];
-	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
+	const filterFields = ['id', 'activated', 'created_at', 'budget', 'updated_at'];
+	$: filteredConfig = Object.entries(changableConfig).filter(
+		([key, _]) => !filterFields.includes(key)
+	);
 </script>
 
 <div class="relative my-4 flex flex-1 flex-col gap-4 pb-4">
@@ -67,11 +103,47 @@
 							<Label for={key}>
 								{toTitle(key)}:
 							</Label>
-							<Input type="text" id={key} {value} />
+							<div class="flex space-x-2">
+								<Input type="text" id={key} bind:value={changableConfig[key]} />
+								<Button size="icon" on:click={() => removeAttribute(key)}
+									><Trash size={16} /></Button
+								>
+							</div>
 						</div>
 					</div>
 				{/each}
+
+				{#each newAttributes as attribute}
+					{#each Object.entries(attribute) as [key, value]}
+						<div class="mb-2 flex flex-row gap-2">
+							<div class="flex w-full max-w-sm flex-col gap-1.5">
+								{key}
+								<Label for={key}>
+									<select class="flex w-full" bind:value={key}>
+										<option selected value={key}>{key}</option>
+										{#each possibleConfigAdd as key}
+											<option value={key}>{toTitle(key)}</option>
+										{/each}
+									</select>
+								</Label>
+								<div class="flex space-x-2">
+									<Input type="text" id={key} {value} />
+									<Button size="icon" on:click={() => removeAttribute(key)}
+										><Trash size={16} /></Button
+									>
+								</div>
+							</div>
+						</div>
+					{/each}
+				{/each}
+
+				{#if possibleConfigAdd.length > 0}
+					<Button class="w-full" on:click={() => addAttribute(possibleConfigAdd[0])}
+						><Plus /></Button
+					>
+				{/if}
 			</Card.Content>
 		</Card.Root>
+		<Button class="fixed bottom-2 right-2" size="icon"><Save size={24} /></Button>
 	</div>
 </div>
