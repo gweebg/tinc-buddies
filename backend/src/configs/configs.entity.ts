@@ -21,10 +21,10 @@ export class Config {
 
   @Column(
   )
-  allocadedBudget: number;
+  budget: number;
 
   @Column()
-  spentBudget: number;
+  aquired: number;
 
   @Column(
     {

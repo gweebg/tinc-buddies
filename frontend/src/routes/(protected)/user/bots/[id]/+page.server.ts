@@ -1,10 +1,10 @@
 import type { PageServerLoad } from './$types';
 
 
-export const load: PageServerLoad = async () => {
+const fetchConfig = async (id: number) => {
 
     const dummy: ConfigSchema = {
-        id: 0,
+        id: id,
         user: 1000,
         name: "Money Maker",
         description: "This is the best bot config ever!",
@@ -18,7 +18,14 @@ export const load: PageServerLoad = async () => {
         activated: true
     }
 
+    return dummy
+}
+
+export const load: PageServerLoad = async ({ params }) => {
+
+    const id: number = Number(params.id)
+
     return {
-        configs: [dummy]
+        config: await fetchConfig(id)
     };
 };
