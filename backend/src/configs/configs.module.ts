@@ -1,17 +1,19 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigsController } from './configs.controller';
 import { ConfigsService } from './configs.service';
 import { Config } from './configs.entity';
-import { AccountsService } from 'src/accounts/accounts.service';
-import { User } from 'src/accounts/accounts.entity';
+import { AccountsModule } from 'src/accounts/accounts.module';
+import { TransactionsModule } from 'src/transactions/transactions.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Config]),
-    TypeOrmModule.forFeature([User]),
+    forwardRef(() => AccountsModule),
+    forwardRef(() => TransactionsModule),
   ],
-  providers: [AccountsService, ConfigsService],
+  providers: [ConfigsService],
   controllers: [ConfigsController],
+  exports: [ConfigsService],
 })
 export class ConfigsModule {}

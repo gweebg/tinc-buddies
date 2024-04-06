@@ -53,4 +53,9 @@ export class ConfigsController {
   remove(@Param('id') id: string): Promise<void> {
     return this.configsService.remove(+id);
   }
+
+  @Get('stats/:id')
+  getStats(@Param('id') id: string): Promise<any> {
+    return this.configsService.getStats(+id);
+  }
 }
