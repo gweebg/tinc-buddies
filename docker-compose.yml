@@ -62,4 +62,6 @@ services:
       - TZ=Pacific/Auckland
     restart: unless-stopped
     ports:
-      - 8000:5050
+      - '5173:5173'
+    volumes:
+      - ./frontend/src:/usr/src/app/src
