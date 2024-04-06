@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createConfigSchema, type ConfigFormSchema } from '$lib/schemas/create_config';
 import { superValidate, type Infer, type SuperValidated } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -20,10 +21,19 @@ const fetchConfigs = async (): Promise<ConfigSchema[]> => {
 const createConfig = async (
 	formData: SuperValidated<Infer<ConfigFormSchema>>
 ): Promise<boolean> => {
+	const data = Object.fromEntries(
+		Object.entries(formData.data).filter(([_, value]) => value !== undefined)
+	);
+
+	data.userID = 1;
+
 	try {
 		const response = await fetch(API_URL + '/configs', {
 			method: 'POST',
-			body: JSON.stringify(formData.data)
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		});
 
 		if (!response.ok) {
@@ -39,9 +49,6 @@ const createConfig = async (
 
 export const load: PageServerLoad = async () => {
 	const configs = await fetchConfigs();
-
-	console.log(configs);
-
 	const form = await superValidate(zod(createConfigSchema));
 
 	return {
