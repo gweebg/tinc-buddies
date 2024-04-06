@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpass
+    container_name: backend-db
+    volumes:
+      - ./backend/data/db:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-app
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    volumes:
+      - ./backend/src:/usr/src/app/src
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: backend-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=tinc@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=tinc
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
