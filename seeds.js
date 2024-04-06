@@ -7,7 +7,11 @@ fetch("http://localhost:3000/accounts", {
     name: "john doe",
     balance: 200,
   }),
-});
+})
+  .then((res) =>
+    res.ok ? console.log("User successful") : console.log("User not created")
+  )
+  .catch((err) => console.log(err));
 
 fetch("http://localhost:3000/configs", {
   method: "POST",
@@ -23,7 +27,13 @@ fetch("http://localhost:3000/configs", {
     budget: 50,
     activated: true,
   }),
-});
+})
+  .then((res) =>
+    res.ok
+      ? console.log("Config successful")
+      : console.log("Config not created")
+  )
+  .catch((err) => console.log(err));
 
 fetch("http://localhost:3000/transactions", {
   method: "POST",
@@ -36,4 +46,10 @@ fetch("http://localhost:3000/transactions", {
     inputAmount: 100,
     type: "BUY",
   }),
-});
+})
+  .then((res) =>
+    res.ok
+      ? console.log("Transaction successful")
+      : console.log("Transaction not created")
+  )
+  .catch((err) => console.log(err));
