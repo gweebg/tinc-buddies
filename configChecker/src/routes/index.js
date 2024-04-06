@@ -1,7 +1,10 @@
 var express = require("express");
 var router = express.Router();
 var cron = require("node-cron");
-const { getActiveConfigs } = require("../controllers/configs");
+const {
+  getActiveConfigs,
+  handleUserConfigs,
+} = require("../controllers/configs");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -36,7 +39,19 @@ cron.schedule(" */2 * * * * *", async () => {
   console.log("A cron job that runs every 2 seconds");
   console.log(dummyData);
   const configs = await getActiveConfigs();
-  console.log(configs);
+
+  const groupedConfigs = configs.reduce((acc, config) => {
+    if (acc[config.user.id]) {
+      acc[config.user.id].push(config);
+    } else {
+      acc[config.user.id] = [config];
+    }
+    return acc;
+  });
+
+  for (const userConfigs of groupedConfigs) {
+    handleUserConfigs(userConfigs, dummyData);
+  }
 });
 
 module.exports = router;
