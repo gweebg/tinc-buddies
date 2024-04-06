@@ -11,8 +11,8 @@ cron.schedule(" */2 * * * * *", async () => {
   const tinkerData = await fetchTinkerData();
   const configs = await fetchActiveConfigs();
 
-  for (const userConfigs of configs) {
-    handleConfig(userConfigs, tinkerData);
+  for (const config of configs) {
+    handleConfig(config, tinkerData);
   }
 });
 

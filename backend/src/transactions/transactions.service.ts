@@ -23,12 +23,36 @@ export class TransactionsService {
   }
 
   async create(transaction: Transaction): Promise<Transaction> {
-    transaction.outputAmmount = Number((transaction.outputAmmount / Number(GlobalService.getBTCPrice().bid)).toFixed(8));
-    this.configService.findOne(transaction.config.id).then((config) => { transaction.type === TransactionType.BUY ? this.configService.spentBudget(config.id, transaction.inputAmmount, transaction.outputAmmount) : this.configService.releaseBudget(config.id, transaction.inputAmmount, transaction.outputAmmount) });
+    transaction.outputAmmount = Number(
+      (
+        transaction.outputAmmount / Number(GlobalService.getBTCPrice().bid)
+      ).toFixed(8),
+    );
+    this.configService.findOne(transaction.config.id).then((config) => {
+      transaction.type === TransactionType.BUY
+        ? this.configService.spentBudget(
+            config.id,
+            transaction.inputAmmount,
+            transaction.outputAmmount,
+          )
+        : this.configService.releaseBudget(
+            config.id,
+            transaction.inputAmmount,
+            transaction.outputAmmount,
+          );
+    });
     return this.transactionsRepository.save(transaction);
   }
 
   async getTransactionsByUserId(userId: number): Promise<Transaction[]> {
-    return this.transactionsRepository.find({ where: { user: { id: userId } } });
+    return this.transactionsRepository.find({
+      where: { user: { id: userId } },
+    });
+  }
+
+  async getTransactionsByConfigId(configId: number): Promise<Transaction[]> {
+    return this.transactionsRepository.find({
+      where: { config: { id: configId } },
+    });
   }
 }

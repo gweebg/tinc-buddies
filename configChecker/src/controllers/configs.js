@@ -1,4 +1,4 @@
-const { makeTransaction } = require("./transactions");
+const { makeTransaction, fetchConfigTransactions } = require("./transactions");
 const {
   validateNTransaction,
   validateRisk,
@@ -21,7 +21,7 @@ module.exports.handleConfig = async (config, tinkerData) => {
     if (config.balance === 0 || !validateRisk(config, tinkerData))
       return [0, "none"];
 
-    const configTransactions = await getConfigs();
+    const configTransactions = await fetchConfigTransactions();
 
     if (!validateNTransaction(config, configTransactions)) return [0, "none"];
 

@@ -17,7 +17,16 @@ export class TransactionsController {
   }
 
   @Get('user/:userId')
-  getTransactionsByUserId(@Param('userId') userId: string): Promise<Transaction[]> {
+  getTransactionsByUserId(
+    @Param('userId') userId: string,
+  ): Promise<Transaction[]> {
     return this.transactionsService.getTransactionsByUserId(+userId);
+  }
+
+  @Get('config/:configId')
+  getTransactionsByConfigId(
+    @Param('configId') configId: string,
+  ): Promise<Transaction[]> {
+    return this.transactionsService.getTransactionsByConfigId(+configId);
   }
 }
