@@ -20,9 +20,9 @@ const isDateToday = (date) => {
 };
 
 module.exports.handleLogic = (config, tinkerData) => {
-  let action = tinkerData.up ? "buy" : "sell";
+  let action = tinkerData.up ? "BUY" : "SELL";
   let amount =
-    (action === "buy"
+    (action === "BUY"
       ? Math.min(config.maxTransactionAmount, config.budget)
       : config.acquire) * tinkerData.trust;
 
@@ -30,7 +30,7 @@ module.exports.handleLogic = (config, tinkerData) => {
     .splice(0, config.lookAheadHours)
     .unshift(tinkerData.price);
 
-  if (action === "buy") {
+  if (action === "BUY") {
     const buyIndex = checkMostProfitBuy(lookAheadHoursPredictions);
     if (buyIndex !== 0) {
       action = "none";

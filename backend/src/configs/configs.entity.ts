@@ -23,10 +23,12 @@ export class Config {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: 0 })
   budget: number;
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   acquired: number;
 
   @Column({
@@ -54,7 +56,9 @@ export class Config {
   })
   maxTransactionRisk: TransactionRisk;
 
-  @Column()
+  @Column({
+    default: 24,
+  })
   lookAheadHours: number;
 
   @Column({

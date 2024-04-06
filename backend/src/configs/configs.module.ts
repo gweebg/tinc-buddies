@@ -7,8 +7,11 @@ import { AccountsService } from 'src/accounts/accounts.service';
 import { User } from 'src/accounts/accounts.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Config]), TypeOrmModule.forFeature([User])],
-    providers: [AccountsService, ConfigsService],
-    controllers: [ConfigsController],
+  imports: [
+    TypeOrmModule.forFeature([Config]),
+    TypeOrmModule.forFeature([User]),
+  ],
+  providers: [AccountsService, ConfigsService],
+  controllers: [ConfigsController],
 })
 export class ConfigsModule {}
