@@ -31,7 +31,7 @@ module.exports.handleConfig = async (config, tinkerData) => {
       makeTransaction(
         logicResponse.amount,
         logicResponse.type,
-        config.userID,
+        config.user,
         config.id
       );
   } catch (error) {
