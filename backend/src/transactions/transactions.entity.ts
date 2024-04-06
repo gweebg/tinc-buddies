@@ -11,7 +11,7 @@ export class Transaction {
 
   @OneToOne(() => User)
   @JoinColumn()
-  profile: User;
+  user: User;
 
   @Column()
   inputAmmount: number;

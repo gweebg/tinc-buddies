@@ -18,8 +18,17 @@ export class ConfigsService {
     return this.configsRepository.findOneBy({ id });
   }
 
+  async getConfigsByUserId(userId: number): Promise<Config[]> {
+    return this.configsRepository.find({ where: { user: { id: userId } } });
+  }
+
   async remove(id: number): Promise<void> {
     await this.configsRepository.delete(id);
+  }
+
+  async update(id: number, config: Config): Promise<Config> {
+    await this.configsRepository.update(id, config);
+    return this.findOne(id);
   }
 
   async create(config: Config): Promise<Config> {

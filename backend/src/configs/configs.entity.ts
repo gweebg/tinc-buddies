@@ -9,6 +9,10 @@ export class Config {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
+
   @Column()
   name: string;
 
@@ -56,5 +60,12 @@ export class Config {
 
   @Column()
   lookAheadHours: number;
+
+  @Column(
+    {
+      default: false
+    }
+  )
+  activated: boolean;
 
 }
