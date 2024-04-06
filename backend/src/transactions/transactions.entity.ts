@@ -2,7 +2,7 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import { TransactionStatus, TransactionType } from './transactions.enum';
@@ -14,11 +14,11 @@ export class Transaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User)
   @JoinColumn()
   user: User;
 
-  @OneToOne(() => Config)
+  @ManyToOne(() => Config)
   @JoinColumn()
   config: Config;
 
