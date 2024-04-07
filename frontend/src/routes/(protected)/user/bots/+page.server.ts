@@ -10,7 +10,7 @@ import { fail } from '@sveltejs/kit';
 const fetchConfigs = async (): Promise<ConfigSchema[]> => {
 	let response;
 	try {
-		response = await fetch(API_URL + '/configs');
+		response = await fetch(API_URL + '/configs/user/1');
 		return await response.json();
 	} catch (err) {
 		console.log(err);
