@@ -168,6 +168,11 @@ async def get_test_result():
     first_vals = SIM_FIRST
     for i in range(24):
         prediction = SIM_MODEL.predict(np.array([first_vals]), verbose=0)
+
+        if i == 0:
+            if prediction[0][0] <= row['open']:
+                result['up'] = False
+
         result['predictions'].append(prediction[0][0])
         first_vals[-1, -1] = prediction[-1][0]
     
