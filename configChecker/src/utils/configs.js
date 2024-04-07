@@ -1,5 +1,4 @@
 module.exports.validateNTransaction = async (config, transactionsHistory) => {
-  console.log(transactionsHistory);
   const todayTransactions = transactionsHistory.filter((transaction) =>
     isDateToday(new Date(transaction.date))
   );
