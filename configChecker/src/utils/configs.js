@@ -27,8 +27,6 @@ module.exports.handleLogic = (config, tinkerData) => {
       ? Math.min(config.maxTransactionAmount, config.budget)
       : config.acquire) * tinkerData.trust;
 
-  console.log(amount);
-
   const lookAheadHoursPredictions = tinkerData.predictions
     .splice(0, config.lookAheadHours)
     .unshift(tinkerData.price);
