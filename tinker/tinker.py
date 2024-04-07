@@ -130,8 +130,8 @@ tinker = None
 async def start_event():
     global tinker
     print("Starting Tinker...")
-    #tinker = Tinker()
-    #tinker.start()
+    tinker = Tinker()
+    tinker.start()
 
 @app.on_event("shutdown")
 async def shutdown_event():
