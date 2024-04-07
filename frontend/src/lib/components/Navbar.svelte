@@ -160,17 +160,6 @@
 					</Tooltip.Content>
 				</Tooltip.Root>
 
-				<Tooltip.Root>
-					<Tooltip.Trigger asChild let:builder>
-						<Button on:click={redirectGithub} variant="ghost" size="icon" builders={[builder]}>
-							<Github strokeWidth={1.5} class="h-[1.2rem] w-[1.2rem]" />
-						</Button>
-					</Tooltip.Trigger>
-					<Tooltip.Content>
-						<p>Github</p>
-					</Tooltip.Content>
-				</Tooltip.Root>
-
 				<Button variant="outline" on:click={deposit}>
 					<p class="text-foreground hover:text-foreground/80 transition-colors">Deposit</p>
 				</Button>
