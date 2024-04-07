@@ -8,6 +8,7 @@ import joblib
 from keras.models import load_model
 import pandas as pd
 import numpy as np
+import json
 
 class Tinker(threading.Thread):
     
@@ -129,8 +130,8 @@ tinker = None
 async def start_event():
     global tinker
     print("Starting Tinker...")
-    tinker = Tinker()
-    tinker.start()
+    #tinker = Tinker()
+    #tinker.start()
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -141,6 +142,44 @@ async def shutdown_event():
     tinker.join()
     print("Tinker stopped.")
 
+
+
+@app.get('/startSim')
+async def start_sim():
+    global SIM_COUNTER, SIM_DATA, SIM_DATA_SCALED, SIM_FIRST, SIM_MODEL, SIM_SCALER_Y
+    
+    SIM_MODEL = load_model('model/lstm_model_1.keras')
+    SIM_COUNTER = 0
+    SIM_DATA = pd.read_csv('data/final_dataset.csv')
+    SIM_DATA = SIM_DATA[:30000]
+    SIM_DATA.drop(columns=['close', "date"], inplace=True)
+    scaler_X_loaded = joblib.load('model/scaler_X.save')
+    SIM_SCALER_Y = joblib.load('model/scaler_y.save')
+    SIM_DATA_SCALED = scaler_X_loaded.transform(SIM_DATA)
+    SIM_FIRST = SIM_DATA_SCALED[:24]
+
+    return 200, "Simulation started."
+
+@app.get('/getTestResult')
+async def get_test_result():
+    global SIM_COUNTER, tinker, SIM_DATA_SCALED, SIM_FIRST, SIM_MODEL, SIM_SCALER_Y
+    row = SIM_DATA.iloc[SIM_COUNTER]
+    result = { "up": True, "volatility": 0.1, "trust": 0.5, "predictions": [], "price" : row['open'] }
+    first_vals = SIM_FIRST
+    for i in range(24):
+        prediction = SIM_MODEL.predict(np.array([first_vals]), verbose=0)
+        result['predictions'].append(prediction[0][0])
+        first_vals[-1, -1] = prediction[-1][0]
+    
+    SIM_COUNTER += 1
+    SIM_FIRST[-1, -1] = SIM_DATA.iloc[SIM_COUNTER]['open']
+
+    result['predictions'] = np.array(result['predictions']).reshape(-1, 1)
+    result['predictions'] = SIM_SCALER_Y.inverse_transform(result['predictions'])
+    result['predictions'] = [float(p) for p in result['predictions']]
+
+    print(result)
+    return 200, result
 
 @app.get('/result')
 async def result():
