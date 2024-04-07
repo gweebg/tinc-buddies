@@ -27,7 +27,7 @@ module.exports.handleConfig = async (config, tinkerData) => {
     //logic
     const logicResponse = handleLogic(config, tinkerData, configTransactions);
 
-    if (type !== "none")
+    if (logicResponse.type !== "none")
       makeTransaction(
         logicResponse.amount,
         logicResponse.type,
