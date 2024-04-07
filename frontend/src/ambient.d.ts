@@ -34,3 +34,11 @@ interface StatSchema {
 	totalBought: number;
 	totalSold: number;
 }
+
+interface AIDataSchema {
+	up: number;
+	volatility: number;
+	trust: number;
+	prediction: number[];
+	price: number;
+}

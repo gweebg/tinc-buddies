@@ -10,7 +10,6 @@
 
 	const sections: Sections = {
 		Home: '/',
-		Profile: '/user',
 		Bots: '/user/bots'
 	};
 
