@@ -56,7 +56,6 @@ class Tinker(threading.Thread):
 
         predictions = [float(p[0]) for p in predictions]
         self.result["up"] = up
-        self.result["predictions"] = predictions + np.random.normal(0, 0.2, len(predictions)).tolist()
 
         # trust is based on the up/down prediction and the sentiment
         self.result["trust"] = min(1, 0.5 + abs((0.5 * (self.sentiment - 1) * (1 if up else -1))))
@@ -185,7 +184,6 @@ async def get_test_result():
     result['predictions'] = np.array(result['predictions']).reshape(-1, 1)
     result['predictions'] = SIM_SCALER_Y.inverse_transform(result['predictions'])
     result['predictions'] = [float(p) for p in result['predictions']]
-    result["predictions"] = result['predictions'] + np.random.normal(0, 0.2, len(result['predictions'])).tolist()
 
     print(result)
     return result
