@@ -8,7 +8,7 @@ const seeds = async () => {
       body: JSON.stringify({
         Id: 1,
         name: "First User",
-        balance: 10000,
+        balance: 500000,
       }),
     });
     
