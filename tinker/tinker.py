@@ -26,6 +26,9 @@ class Tinker(threading.Thread):
 
         self.result = { "up": True, "volatility": 0.1, "trust": 0.5, "predictions": [1, 2, 3], "price" : 1 }
     
+    def get_result(self):
+        return self.result
+
     def get_price(self):
         return self.current_price
     
