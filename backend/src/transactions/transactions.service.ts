@@ -34,17 +34,25 @@ export class TransactionsService {
 
     await this.configService.findOne(id).then(async (config) => {
       try {
-        transaction.type === TransactionType.BUY
-          ? await this.configService.spentBudget(
+        if (transaction.type === TransactionType.BUY) {
+          transaction.outputAmount = Number(
+            (
+              transaction.inputAmount / Number(GlobalService.getBTCPrice().bid)
+            ).toFixed(8),
+          );
+          await this.configService.spentBudget(config.id,transaction.inputAmount,transaction.outputAmount,)
+        }
+        else {
+          transaction.outputAmount = Number(
+            (
+              transaction.inputAmount * Number(GlobalService.getBTCPrice().ask)
+            ).toFixed(8),
+          );
+          await this.configService.releaseBudget(
               config.id,
               transaction.inputAmount,
-              transaction.outputAmount,
-            )
-          : await this.configService.releaseBudget(
-              config.id,
-              transaction.inputAmount,
-              transaction.outputAmount,
-            );
+              transaction.outputAmount);
+        }
         transaction.status = TransactionStatus.APPROVED;
       }
       catch (e) {
