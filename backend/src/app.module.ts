@@ -25,9 +25,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     ScheduleModule.forRoot(),
 
     // Local modules
-    AccountsModule,
-    TransactionsModule,
     ConfigsModule,
+    TransactionsModule,
+    AccountsModule,
   ],
   controllers: [AppController, WrapperController],
   providers: [WrapperService],

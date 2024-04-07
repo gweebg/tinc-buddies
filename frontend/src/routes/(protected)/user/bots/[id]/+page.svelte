@@ -21,7 +21,7 @@
 	const { config, transactions } = data;
 	console.log(config, transactions);
 
-	const filterFields = ['id', 'activated', 'created_at', 'updated_at'];
+	const filterFields = ['id', 'activated', 'created_at', 'budget', 'updated_at'];
 	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
 
 	const back = () => {
