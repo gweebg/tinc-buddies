@@ -63,7 +63,7 @@ export class Config {
   lookAheadHours: number;
 
   @Column({
-    default: false,
+    default: true,
   })
   activated: boolean;
 }
