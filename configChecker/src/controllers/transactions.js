@@ -15,8 +15,7 @@ module.exports.makeTransaction = async (
       }),
       headers: { "Content-Type": "application/json" },
     });
-    const json = await response.json();
-    console.log(json);
+    await response.json();
   } catch (error) {
     return { error: error.message };
   }
