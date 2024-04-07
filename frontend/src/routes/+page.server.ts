@@ -1,3 +1,5 @@
+import { API_URL } from '$env/static/private';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './(protected)/user/bots/$types';
 
 const fetchAIData = async (): Promise<AIDataSchema | undefined> => {
@@ -17,10 +19,26 @@ const fetchAIData = async (): Promise<AIDataSchema | undefined> => {
 	}
 };
 
+const fetchBalance = async (): Promise<UserSchema | undefined> => {
+	let response;
+	try {
+		response = await fetch(API_URL + '/accounts/1');
+		return await response.json();
+	} catch (err) {
+		console.log(err);
+		return undefined;
+	}
+};
+
 export const load: PageServerLoad = async () => {
 	const data = await fetchAIData();
+	const user = await fetchBalance();
+	if (user === undefined) {
+		error(404);
+	}
 
 	return {
-		botData: data
+		botData: data,
+		balance: user.balance
 	};
 };

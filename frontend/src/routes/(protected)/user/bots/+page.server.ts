@@ -5,7 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
 
 import { API_URL } from '$env/static/private';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 
 const fetchConfigs = async (): Promise<ConfigSchema[]> => {
 	let response;
@@ -15,6 +15,17 @@ const fetchConfigs = async (): Promise<ConfigSchema[]> => {
 	} catch (err) {
 		console.log(err);
 		return [];
+	}
+};
+
+const fetchBalance = async (): Promise<UserSchema | undefined> => {
+	let response;
+	try {
+		response = await fetch(API_URL + '/accounts/1');
+		return await response.json();
+	} catch (err) {
+		console.log(err);
+		return undefined;
 	}
 };
 
@@ -51,9 +62,15 @@ export const load: PageServerLoad = async () => {
 	const configs = await fetchConfigs();
 	const form = await superValidate(zod(createConfigSchema));
 
+	const user = await fetchBalance();
+	if (user === undefined) {
+		error(404);
+	}
+
 	return {
-		configs: configs,
-		form: form
+		configs,
+		form,
+		balance: user.balance
 	};
 };
 

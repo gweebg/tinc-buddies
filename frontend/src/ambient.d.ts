@@ -42,3 +42,9 @@ interface AIDataSchema {
 	prediction: number[];
 	price: number;
 }
+
+interface UserSchema {
+	id: number;
+	name: string;
+	balance: number;
+}
