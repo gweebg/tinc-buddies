@@ -4,23 +4,7 @@
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
 
 	import { Button } from '$lib/components/ui/button';
-	import {
-		ArrowDown,
-		ArrowLeftRight,
-		ArrowUp,
-		ArrowUpNarrowWide,
-		ChevronLeft,
-		CircleDot,
-		Clock,
-		DollarSign,
-		Handshake,
-		Pause,
-		Pencil,
-		PiggyBank,
-		Play,
-		Sun,
-		Trash
-	} from 'lucide-svelte';
+	import { ArrowLeftRight, ChevronLeft, DollarSign, Pencil } from 'lucide-svelte';
 
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
@@ -30,6 +14,7 @@
 	import { toTitle } from '$lib/utils/text';
 	import type { CarouselOptions } from '$lib/components/ui/carousel/context';
 	import Transaction from '$lib/components/config/Transaction.svelte';
+	import Controls from '$lib/components/config/Controls.svelte';
 
 	export let data: PageData;
 
@@ -74,7 +59,7 @@
 						</Breadcrumb.Item>
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
-							<Breadcrumb.Page>{config.name}</Breadcrumb.Page>
+							<Breadcrumb.Page>"{config.name}"</Breadcrumb.Page>
 						</Breadcrumb.Item>
 					</Breadcrumb.List>
 				</Breadcrumb.Root>
@@ -84,27 +69,7 @@
 
 	<div class="container flex flex-col gap-4">
 		<div class="flex flex-row gap-2">
-			{#if config.activated === true}
-				<Button class="flex-1 gap-2" size="sm" disabled>
-					<Trash strokeWidth={1.5} size={20} /> Delete
-				</Button>
-				<Button class="flex-1 gap-2" size="sm">
-					<Pause strokeWidth={1.5} size={20} /> Stop
-				</Button>
-				<Button class="flex-1 gap-2" size="sm" disabled>
-					<Play strokeWidth={1.5} size={20} /> Start
-				</Button>
-			{:else}
-				<Button class="flex-1 gap-2" size="sm">
-					<Trash strokeWidth={1.5} size={20} /> Delete
-				</Button>
-				<Button class="flex-1 gap-2" size="sm" disabled>
-					<Pause strokeWidth={1.5} size={20} /> Stop
-				</Button>
-				<Button class="flex-1 gap-2" size="sm">
-					<Play strokeWidth={1.5} size={20} /> Start
-				</Button>
-			{/if}
+			<Controls id={config.id} status={config.activated} />
 		</div>
 
 		<Card.Root class="w-full">
@@ -133,8 +98,8 @@
 									<ArrowLeftRight class="text-muted-foreground h-4 w-4" />
 								</Card.Header>
 								<Card.Content>
-									<div class="text-2xl font-bold">452</div>
-									<p class="text-muted-foreground text-xs">+6.1% from last month</p>
+									<div class="text-2xl font-bold">{transactions.length}</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
 								</Card.Content>
 							</Card.Root>
 						</Carousel.Item>
