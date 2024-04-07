@@ -24,6 +24,9 @@ class Tinker(threading.Thread):
         self.context.drop(columns=['close'], inplace=True)
         self.context = self.scaler_X_loaded.transform(self.context)
 
+        self.MODEL_UPDATE_INTERVAL = 60 * 60 # hourly update
+        self.SENTIMENT_UPDATE_INTERVAL = 10
+
         self.result = { "up": True, "volatility": 0.1, "trust": 0.5, "predictions": [1, 2, 3], "price" : 1 }
     
     def get_result(self):
@@ -49,6 +52,8 @@ class Tinker(threading.Thread):
         self.result = { "up": up, "volatility": 0.1, "trust": 0.5, "predictions": predictions, "price" : float(self.current_price) }
 
     def run(self,*args,**kwargs):
+        last_prediction_time = 0
+        last_sentiment_time = 0
         while self.running:
             print("Price Monitor is running...")
             self.current_price = self.__request_price()
@@ -59,21 +64,31 @@ class Tinker(threading.Thread):
             print("Next price: ", next_price)
 
             daily_predictions = []
-            for i in range(23):
-                prediction = self.predict()
-                daily_predictions.append(prediction)
-                self.context[-1, -1] = prediction            
-            
-            # Add the next_price to the daily_predictions (head)
-            daily_predictions.insert(0, next_price)
+            if time.time() - last_prediction_time >= self.MODEL_UPDATE_INTERVAL:
+                print("Predicting for the next 24 hours...")
+                for i in range(23):
+                    prediction = self.predict()
+                    daily_predictions.append(prediction)
+                    self.context[-1, -1] = prediction            
+                
+                # Add the next_price to the daily_predictions (head)
+                daily_predictions.insert(0, next_price)
 
-            # Scale the predictions back to the original scale
-            daily_predictions = self.scaler_y_loaded.inverse_transform(np.array(daily_predictions).reshape(-1, 1))
+                # Scale the predictions back to the original scale
+                daily_predictions = self.scaler_y_loaded.inverse_transform(np.array(daily_predictions).reshape(-1, 1))
 
-            self.update_result(daily_predictions)
-            print("Price Monitor is sleeping...")
+                self.update_result(daily_predictions)
+                last_prediction_time = time.time()
+            else:
+                print("Will predict in ", self.MODEL_UPDATE_INTERVAL - (time.time() - last_prediction_time), " seconds.")
 
-            time.sleep(60*60)
+            if time.time() - last_sentiment_time >= self.SENTIMENT_UPDATE_INTERVAL:
+                print("Updating sentiment...")
+                last_sentiment_time = time.time()
+            else:
+                print("Will update sentiment in ", self.SENTIMENT_UPDATE_INTERVAL - (time.time() - last_sentiment_time), " seconds.")
+
+            time.sleep(1)
     
     def stop(self):
         self.running = False
