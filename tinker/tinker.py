@@ -179,7 +179,7 @@ async def get_test_result():
     result['predictions'] = [float(p) for p in result['predictions']]
 
     print(result)
-    return 200, result
+    return result
 
 @app.get('/result')
 async def result():
