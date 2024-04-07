@@ -21,7 +21,7 @@
 			console.error(response);
 			return;
 		} finally {
-			location.reload();
+			location.href = '/user/bots';
 		}
 	};
 
