@@ -13,7 +13,7 @@
 </script>
 
 <div class="relative my-4 flex flex-1 flex-col gap-4 pb-4">
-	<Navbar section="Bots" />
+	<Navbar section="Bots" balance={data.balance} />
 	<div class="container">
 		<header class="mb-4 flex flex-row items-center justify-between">
 			<div>
