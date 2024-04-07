@@ -79,7 +79,7 @@
 						<Sheet.Header>
 							<Sheet.Title>
 								<div class="flex items-center justify-center space-x-2">
-									<span class="font-bold sm:inline-block">tinc-buddy</span>
+									<span class="font-bold sm:inline-block">Tinc Buddies</span>
 								</div>
 							</Sheet.Title>
 
