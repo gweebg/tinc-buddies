@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { ConfigsService } from './configs.service';
 import { Config } from './configs.entity';
+import { getRiskPercent } from './configs.enum';
 
 @Controller('configs')
 export class ConfigsController {
@@ -21,7 +22,19 @@ export class ConfigsController {
 
   @Get()
   findAll(): Promise<Config[]> {
-    return this.configsService.findAllActivated();
+
+    let configs = this.configsService.findAllActivated();
+
+
+    configs.then((configs) => {
+      return configs.map(async (config) => {
+        config.minTransactionRisk = await getRiskPercent(config.minTransactionRisk);
+        config.maxTransactionRisk = await getRiskPercent(config.maxTransactionRisk);
+        return config;
+      });
+    })
+
+    return configs;
   }
 
   @Get(':id')

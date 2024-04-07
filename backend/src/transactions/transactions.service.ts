@@ -31,9 +31,8 @@ export class TransactionsService {
     );
     transaction.date = new Date();
 
-    console.log(transaction);
 
-    this.configService.findOne(id).then(async (config) => {
+    await this.configService.findOne(id).then(async (config) => {
       try {
         transaction.type === TransactionType.BUY
           ? await this.configService.spentBudget(

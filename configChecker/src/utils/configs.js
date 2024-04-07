@@ -26,9 +26,11 @@ module.exports.handleLogic = (config, tinkerData) => {
       ? Math.min(config.maxTransactionAmount, config.budget)
       : config.acquired) * tinkerData.trust;
 
-  const lookAheadHoursPredictions = tinkerData.predictions
-    .splice(0, config.lookAheadHours)
-    .unshift(tinkerData.price);
+  const lookAheadHoursPredictions = tinkerData.predictions.splice(
+    0,
+    config.lookAheadHours
+  );
+  lookAheadHoursPredictions.unshift(tinkerData.price);
 
   if (type === "BUY") {
     const buyIndex = checkMostProfitBuy(lookAheadHoursPredictions);
@@ -37,8 +39,8 @@ module.exports.handleLogic = (config, tinkerData) => {
       amount = 0;
     }
   } else {
-    const sellIndex = checkMostProfitSell(lookAheadHoursPredictions);
-    if (sellIndex !== 0) {
+    const sell = checkMostProfitSell(lookAheadHoursPredictions);
+    if (!sell) {
       type = "none";
       amount = 0;
     }
@@ -66,23 +68,15 @@ const checkMostProfitBuy = (lookAheadHoursPredictions) => {
     }
   }
 
-  if (totProfit - currentBiggestProfit > 1) return i;
+  if (totProfit - currentBiggestProfit > currentBiggestProfit * 0.02) return i;
 
-  return i;
+  return 0;
 };
 
 const checkMostProfitSell = (lookAheadHoursPredictions) => {
-  let totSell = 0;
-  let biggestProfitIndex = 0;
-  let i = 0;
-  for (; i < lookAheadHoursPredictions.length; i++) {
-    for (let j = i + 1; j < lookAheadHoursPredictions.length; j++) {
-      if (lookAheadHoursPredictions[j] > totSell) {
-        totSell = profit;
-        biggestSellIndex = i;
-      }
-    }
-  }
-  if (totSell - lookAheadHoursPredictions[0] > 1) return i;
-  return 0;
+  const currentPrice = lookAheadHoursPredictions[0];
+  const biggestSell = Math.max(lookAheadHoursPredictions);
+
+  if (biggestSell - currentPrice > currentPrice * 0.02) return false;
+  return true;
 };

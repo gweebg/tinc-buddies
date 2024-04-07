@@ -1,7 +1,7 @@
 module.exports.makeTransaction = async (
   inputAmount,
   type,
-  user,
+  user = 1,
   config
 ) => {
   try {

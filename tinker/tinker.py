@@ -27,9 +27,11 @@ class Tinker(threading.Thread):
         self.MODEL_UPDATE_INTERVAL = 60 * 60 # hourly update
         self.SENTIMENT_UPDATE_INTERVAL = 10
 
-        self.result = { "up": True, "volatility": 0.1, "trust": 0.5, "predictions": [1, 2, 3], "price" : 1 }
+        self.sentiment = 1 # 0, 1 or 2 depending on the sentiment (bearish, neutral, bullish)
+        self.result = { "up": True, "volatility": 0.1, "trust": 0.5, "predictions": [], "price" : -1 }
     
     def get_result(self):
+        self.result["price"] = self.get_price()
         return self.result
 
     def get_price(self):
@@ -43,13 +45,37 @@ class Tinker(threading.Thread):
         p = self.model_loaded.predict(np.array([self.context]))
         return p[0][0]
 
-    def update_result(self, predictions):
+    def update_result_predictions(self, predictions):
         up = True
         if float(predictions[0][0]) <= float(self.current_price):
             up = False
 
         predictions = [float(p[0]) for p in predictions]
-        self.result = { "up": up, "volatility": 0.1, "trust": 0.5, "predictions": predictions, "price" : float(self.current_price) }
+        self.result["up"] = up
+        self.result["predictions"] = predictions
+
+        # trust is based on the up/down prediction and the sentiment
+        self.result["trust"] = min(1, 0.5 + abs((0.5 * (self.sentiment - 1) * (1 if up else -1))))
+
+    def update_sentiment(self):
+        url = "https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest"
+        api_key = "c35fe2d71178f574b7c6f3bce12eb990b9f08ad1e51e88075d4441d9c69f956f"
+        params = {
+            "fsym": "BTC",
+            "api_key": api_key  # Include your API key as a parameter
+        }
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            # Get sentiment data
+            sentiment_data = response.json()
+            lv_sent = 0 if sentiment_data['Data']['largetxsVar']['sentiment'] == "bearish" else 1
+            an_sent = 0 if sentiment_data['Data']['addressesNetGrowth']['sentiment'] == "bearish" else 1
+            
+            self.sentiment = lv_sent + an_sent # 0, 1 or 2 depending on the sentiment
+            print("Sentiment: ", self.sentiment)
+        else:
+            # Print the error message
+            print("Error:", response.text)
 
     def run(self,*args,**kwargs):
         last_prediction_time = 0
@@ -77,13 +103,16 @@ class Tinker(threading.Thread):
                 # Scale the predictions back to the original scale
                 daily_predictions = self.scaler_y_loaded.inverse_transform(np.array(daily_predictions).reshape(-1, 1))
 
-                self.update_result(daily_predictions)
+                self.update_result_predictions(daily_predictions)
                 last_prediction_time = time.time()
             else:
                 print("Will predict in ", self.MODEL_UPDATE_INTERVAL - (time.time() - last_prediction_time), " seconds.")
 
             if time.time() - last_sentiment_time >= self.SENTIMENT_UPDATE_INTERVAL:
                 print("Updating sentiment...")
+
+                self.update_sentiment()
+
                 last_sentiment_time = time.time()
             else:
                 print("Will update sentiment in ", self.SENTIMENT_UPDATE_INTERVAL - (time.time() - last_sentiment_time), " seconds.")

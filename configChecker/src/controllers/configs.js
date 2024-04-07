@@ -18,7 +18,7 @@ module.exports.fetchActiveConfigs = async () => {
 
 module.exports.handleConfig = async (config, tinkerData) => {
   try {
-    if (config.balance === 0 || !validateRisk(config, tinkerData)) return;
+    if (!validateRisk(config, tinkerData)) return;
 
     const configTransactions = await fetchConfigTransactions(config.id);
 
@@ -27,9 +27,7 @@ module.exports.handleConfig = async (config, tinkerData) => {
     //logic
     const logicResponse = handleLogic(config, tinkerData, configTransactions);
 
-
-    
-    if (logicResponse.type !== "none"){
+    if (logicResponse.type !== "none") {
       console.log(
         `Transaction made: ${logicResponse.amount} ${logicResponse.type} for config ${config.id}`
       );
@@ -39,8 +37,7 @@ module.exports.handleConfig = async (config, tinkerData) => {
         config.user,
         config.id
       );
-  }
-    else {
+    } else {
       console.log(`No transaction made for config ${config.id}`);
     }
   } catch (error) {
