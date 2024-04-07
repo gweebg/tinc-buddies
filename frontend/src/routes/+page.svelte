@@ -29,7 +29,7 @@
 		</header>
 	</div>
 	<div class="container flex flex-col gap-4">
-		{#each Object.entries(botData) as [key, value]}
+		{#each Object.entries(botData).reverse() as [key, value]}
 			<Card.Root class="w-full">
 				<Card.Header>
 					<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">
