@@ -160,6 +160,30 @@
 								</Card.Content>
 							</Card.Root>
 						</Carousel.Item>
+						<Carousel.Item>
+							<Card.Root>
+								<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+									<Card.Title class="text-sm font-medium">Budget</Card.Title>
+									<Handshake class="text-muted-foreground h-4 w-4" />
+								</Card.Header>
+								<Card.Content>
+									<div class="text-2xl font-bold">{config.budget} USD</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
+								</Card.Content>
+							</Card.Root>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Card.Root>
+								<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+									<Card.Title class="text-sm font-medium">Balance BTC</Card.Title>
+									<Handshake class="text-muted-foreground h-4 w-4" />
+								</Card.Header>
+								<Card.Content>
+									<div class="text-2xl font-bold">{config.acquired} BTC</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
+								</Card.Content>
+							</Card.Root>
+						</Carousel.Item>
 					</Carousel.Content>
 					<Carousel.Previous />
 					<Carousel.Next />
