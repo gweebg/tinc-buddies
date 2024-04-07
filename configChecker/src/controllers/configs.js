@@ -27,14 +27,24 @@ module.exports.handleConfig = async (config, tinkerData) => {
     //logic
     const logicResponse = handleLogic(config, tinkerData, configTransactions);
 
-    if (type !== "none")
+
+    
+    if (logicResponse.type !== "none"){
+      console.log(
+        `Transaction made: ${logicResponse.amount} ${logicResponse.type} for config ${config.id}`
+      );
       makeTransaction(
         logicResponse.amount,
         logicResponse.type,
         config.user,
         config.id
       );
+  }
+    else {
+      console.log(`No transaction made for config ${config.id}`);
+    }
   } catch (error) {
+    console.log(error);
     return { error: error.message };
   }
 };
