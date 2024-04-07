@@ -78,7 +78,6 @@
 			<Controls id={config.id} status={config.activated} />
 		</div>
 
-		<!-- profit: 0, numberTransactions: 0, totalBought: 0, totalSold: 0 -->
 		<Card.Root class="w-full">
 			<Card.Header>
 				<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Statistics</h1>
@@ -157,7 +156,7 @@
 							<Label for={key}>
 								{toTitle(key)}:
 							</Label>
-							<Input type="email" id={key} {value} disabled />
+							<Input class="flex w-full flex-1" type="email" id={key} {value} disabled />
 						</div>
 					</div>
 				{/each}

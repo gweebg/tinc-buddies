@@ -1,25 +1,25 @@
 <script lang="ts">
+	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
+	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { toTitle } from '$lib/utils/text';
-	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
-	import { Button } from '$lib/components/ui/button';
-	import { ChevronLeft, Save, Trash } from 'lucide-svelte';
+	import { ChevronLeft, Plus, Save, Trash } from 'lucide-svelte';
 	import type { PageData } from '../$types';
-	import { Plus } from 'lucide-svelte';
 
 	export let data: PageData;
 
-	let possibleConfigAdd = [
+	const { config } = data;
+	let changableConfig = config;
+
+	let possibleConfigAdd: string[] = [
 		'maxTransactionAmount',
 		'minTransactionAmount',
 		'maxNumberOfTransactions',
 		'minTransactionRisk',
 		'maxTransactionRisk',
-		'lookAheadHours',
-		'test',
-		'sadfgadfgdafgdas'
+		'lookAheadHours'
 	].filter((key) => !Object.keys(data.config).includes(key));
 
 	let newAttributes: { [key in (typeof possibleConfigAdd)[number]]: string }[] = [];
@@ -41,9 +41,6 @@
 		possibleConfigAdd = possibleConfigAdd.filter((k) => k !== key);
 		possibleConfigAdd.sort();
 	};
-
-	const { config } = data;
-	let changableConfig = config;
 
 	const back = () => {
 		history.back();
@@ -77,7 +74,7 @@
 						</Breadcrumb.Item>
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
-							<Breadcrumb.Page>{config.name}</Breadcrumb.Page>
+							<Breadcrumb.Page>"{config.name}"</Breadcrumb.Page>
 						</Breadcrumb.Item>
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
