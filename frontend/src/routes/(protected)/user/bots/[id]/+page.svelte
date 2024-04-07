@@ -2,7 +2,6 @@
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
-
 	import { Button } from '$lib/components/ui/button';
 	import {
 		ArrowLeftRight,
@@ -31,7 +30,7 @@
 
 	let editedConfig = config;
 
-	const filterFields = ['id', 'activated', 'created_at', 'budget', 'updated_at'];
+	const filterFields = ['id', 'activated', 'created_at', 'acquired', 'budget', 'updated_at'];
 	const filteredConfig = Object.entries(editedConfig).filter(
 		([key, _]) => !filterFields.includes(key)
 	);
@@ -85,7 +84,7 @@
 						</Breadcrumb.Item>
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
-							<Breadcrumb.Link href="/user">User</Breadcrumb.Link>
+							<Breadcrumb.Link href="/user/bots">User</Breadcrumb.Link>
 						</Breadcrumb.Item>
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
