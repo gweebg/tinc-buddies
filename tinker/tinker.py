@@ -9,12 +9,15 @@ from keras.models import load_model
 import pandas as pd
 import numpy as np
 import json
+from dotenv import load_dotenv
+import os
 
 class Tinker(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
         self.running = True
+        load_dotenv()
 
         # Load ML model and scaler
         self.model_loaded = load_model('model/lstm_model_1.keras')
@@ -60,7 +63,7 @@ class Tinker(threading.Thread):
 
     def update_sentiment(self):
         url = "https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest"
-        api_key = "c35fe2d71178f574b7c6f3bce12eb990b9f08ad1e51e88075d4441d9c69f956f"
+        api_key = os.getenv('API_KEY')
         params = {
             "fsym": "BTC",
             "api_key": api_key  # Include your API key as a parameter
