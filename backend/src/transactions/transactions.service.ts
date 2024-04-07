@@ -23,7 +23,7 @@ export class TransactionsService {
     return this.transactionsRepository.findOneBy({ id });
   }
 
-  async create(transaction: Transaction): Promise<Transaction> {
+  async create(transaction: Transaction, id: any): Promise<Transaction> {
     transaction.outputAmount = Number(
       (
         transaction.inputAmount / Number(GlobalService.getBTCPrice().bid)
@@ -31,7 +31,9 @@ export class TransactionsService {
     );
     transaction.date = new Date();
 
-    this.configService.findOne(transaction.config.id).then(async (config) => {
+    console.log(transaction);
+
+    this.configService.findOne(id).then(async (config) => {
       try {
         transaction.type === TransactionType.BUY
           ? await this.configService.spentBudget(
@@ -44,7 +46,7 @@ export class TransactionsService {
               transaction.inputAmount,
               transaction.outputAmount,
             );
-            transaction.status = TransactionStatus.APPROVED;
+        transaction.status = TransactionStatus.APPROVED;
       }
       catch (e) {
         transaction.status = TransactionStatus.DECLINED;
