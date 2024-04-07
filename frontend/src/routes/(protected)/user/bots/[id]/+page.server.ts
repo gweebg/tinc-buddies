@@ -36,6 +36,23 @@ const fetchTransactions = async (id: number): Promise<TransactionSchema[] | unde
 	}
 };
 
+const fetchStats = async (id: number): Promise<StatSchema | undefined> => {
+	let response;
+	try {
+		response = await fetch(API_URL + '/configs/stats/' + id);
+
+		if (!response.ok) {
+			console.error(response);
+			return undefined;
+		}
+
+		return await response.json();
+	} catch (err) {
+		console.error(err);
+		return undefined;
+	}
+};
+
 export const load: PageServerLoad = async ({ params }) => {
 	const id: number = Number(params.id);
 
@@ -46,6 +63,11 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const tx = await fetchTransactions(id);
 	if (tx === undefined) {
+		throw error(404);
+	}
+
+	const stats = await fetchStats(id);
+	if (stats === undefined) {
 		throw error(404);
 	}
 
@@ -70,6 +92,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		config: config,
-		transactions: tx
+		transactions: tx,
+		stats: stats
 	};
 };

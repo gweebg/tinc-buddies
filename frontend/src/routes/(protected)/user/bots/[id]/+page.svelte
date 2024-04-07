@@ -4,7 +4,14 @@
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
 
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowLeftRight, ChevronLeft, DollarSign, Pencil } from 'lucide-svelte';
+	import {
+		ArrowLeftRight,
+		ChevronLeft,
+		DollarSign,
+		Handshake,
+		Pencil,
+		PiggyBank
+	} from 'lucide-svelte';
 
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
@@ -18,8 +25,7 @@
 
 	export let data: PageData;
 
-	const { config, transactions } = data;
-	console.log(config, transactions);
+	const { config, transactions, stats } = data;
 
 	const filterFields = ['id', 'activated', 'created_at', 'budget', 'updated_at'];
 	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
@@ -72,6 +78,7 @@
 			<Controls id={config.id} status={config.activated} />
 		</div>
 
+		<!-- profit: 0, numberTransactions: 0, totalBought: 0, totalSold: 0 -->
 		<Card.Root class="w-full">
 			<Card.Header>
 				<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Statistics</h1>
@@ -86,7 +93,7 @@
 									<DollarSign class="text-muted-foreground h-4 w-4" />
 								</Card.Header>
 								<Card.Content>
-									<div class="text-2xl font-bold">$45,231.89</div>
+									<div class="text-2xl font-bold">{stats.profit} USD</div>
 									<p class="text-muted-foreground text-xs">+20.1% from last month</p>
 								</Card.Content>
 							</Card.Root>
@@ -99,6 +106,30 @@
 								</Card.Header>
 								<Card.Content>
 									<div class="text-2xl font-bold">{transactions.length}</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
+								</Card.Content>
+							</Card.Root>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Card.Root>
+								<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+									<Card.Title class="text-sm font-medium">Buys</Card.Title>
+									<PiggyBank class="text-muted-foreground h-4 w-4" />
+								</Card.Header>
+								<Card.Content>
+									<div class="text-2xl font-bold">{stats.totalBought}</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
+								</Card.Content>
+							</Card.Root>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Card.Root>
+								<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+									<Card.Title class="text-sm font-medium">Sales</Card.Title>
+									<Handshake class="text-muted-foreground h-4 w-4" />
+								</Card.Header>
+								<Card.Content>
+									<div class="text-2xl font-bold">{stats.totalSold}</div>
 									<p class="text-muted-foreground text-xs">+0% from last month</p>
 								</Card.Content>
 							</Card.Root>
