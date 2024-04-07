@@ -68,7 +68,7 @@ class Tinker(threading.Thread):
             self.update_result(daily_predictions)
             print("Price Monitor is sleeping...")
 
-            time.sleep(5)
+            time.sleep(60*60)
     
     def stop(self):
         self.running = False
@@ -93,7 +93,7 @@ async def shutdown_event():
     print("Tinker stopped.")
 
 
-@app.get('/')
+@app.get('/result')
 async def result():
     global tinker
     if tinker is None:
