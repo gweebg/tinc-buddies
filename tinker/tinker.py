@@ -44,7 +44,7 @@ class Tinker(threading.Thread):
         up = True
         if float(predictions[0][0]) <= float(self.current_price):
             up = False
-        self.result = { "up": up, "volatility": 0.1, "trust": 0.5, "predictions": predictions, "price" : self.current_price }
+        self.result = { "up": up, "volatility": 0.1, "trust": 0.5, "predictions": float(predictions[0][0]), "price" : float(self.current_price) }
 
     def run(self,*args,**kwargs):
         while self.running:
