@@ -9,11 +9,8 @@
 		ChevronLeft,
 		DollarSign,
 		Handshake,
-		Pause,
 		Pencil,
-		PiggyBank,
-		Play,
-		Trash
+		PiggyBank
 	} from 'lucide-svelte';
 
 	import type { PageData } from './$types';
@@ -23,13 +20,14 @@
 
 	import { toTitle } from '$lib/utils/text';
 	import type { CarouselOptions } from '$lib/components/ui/carousel/context';
+	import Transaction from '$lib/components/config/Transaction.svelte';
+	import Controls from '$lib/components/config/Controls.svelte';
 
 	export let data: PageData;
 
-	const { config, tx } = data;
-	console.log(config, tx);
+	const { config, transactions, stats } = data;
 
-	const filterFields = ['id', 'activated', 'created_at', 'updated_at'];
+	const filterFields = ['id', 'activated', 'created_at', 'budget', 'updated_at'];
 	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
 
 	const back = () => {
@@ -67,7 +65,7 @@
 						</Breadcrumb.Item>
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
-							<Breadcrumb.Page>{config.name}</Breadcrumb.Page>
+							<Breadcrumb.Page>"{config.name}"</Breadcrumb.Page>
 						</Breadcrumb.Item>
 					</Breadcrumb.List>
 				</Breadcrumb.Root>
@@ -77,29 +75,10 @@
 
 	<div class="container flex flex-col gap-4">
 		<div class="flex flex-row gap-2">
-			{#if config.activated === true}
-				<Button class="flex-1 gap-2" size="sm" disabled>
-					<Trash strokeWidth={1.5} size={20} /> Delete
-				</Button>
-				<Button class="flex-1 gap-2" size="sm">
-					<Pause strokeWidth={1.5} size={20} /> Stop
-				</Button>
-				<Button class="flex-1 gap-2" size="sm" disabled>
-					<Play strokeWidth={1.5} size={20} /> Start
-				</Button>
-			{:else}
-				<Button class="flex-1 gap-2" size="sm">
-					<Trash strokeWidth={1.5} size={20} /> Delete
-				</Button>
-				<Button class="flex-1 gap-2" size="sm" disabled>
-					<Pause strokeWidth={1.5} size={20} /> Stop
-				</Button>
-				<Button class="flex-1 gap-2" size="sm">
-					<Play strokeWidth={1.5} size={20} /> Start
-				</Button>
-			{/if}
+			<Controls id={config.id} status={config.activated} />
 		</div>
 
+		<!-- profit: 0, numberTransactions: 0, totalBought: 0, totalSold: 0 -->
 		<Card.Root class="w-full">
 			<Card.Header>
 				<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Statistics</h1>
@@ -114,7 +93,7 @@
 									<DollarSign class="text-muted-foreground h-4 w-4" />
 								</Card.Header>
 								<Card.Content>
-									<div class="text-2xl font-bold">$45,231.89</div>
+									<div class="text-2xl font-bold">{stats.profit} USD</div>
 									<p class="text-muted-foreground text-xs">+20.1% from last month</p>
 								</Card.Content>
 							</Card.Root>
@@ -126,8 +105,32 @@
 									<ArrowLeftRight class="text-muted-foreground h-4 w-4" />
 								</Card.Header>
 								<Card.Content>
-									<div class="text-2xl font-bold">452</div>
-									<p class="text-muted-foreground text-xs">+6.1% from last month</p>
+									<div class="text-2xl font-bold">{transactions.length}</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
+								</Card.Content>
+							</Card.Root>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Card.Root>
+								<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+									<Card.Title class="text-sm font-medium">Buys</Card.Title>
+									<PiggyBank class="text-muted-foreground h-4 w-4" />
+								</Card.Header>
+								<Card.Content>
+									<div class="text-2xl font-bold">{stats.totalBought}</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
+								</Card.Content>
+							</Card.Root>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Card.Root>
+								<Card.Header class="flex flex-row items-center justify-between space-y-0 pb-2">
+									<Card.Title class="text-sm font-medium">Sales</Card.Title>
+									<Handshake class="text-muted-foreground h-4 w-4" />
+								</Card.Header>
+								<Card.Content>
+									<div class="text-2xl font-bold">{stats.totalSold}</div>
+									<p class="text-muted-foreground text-xs">+0% from last month</p>
 								</Card.Content>
 							</Card.Root>
 						</Carousel.Item>
@@ -166,25 +169,13 @@
 				<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Transaction History</h1>
 			</Card.Header>
 			<Card.Content class="flex flex-col gap-2 ">
-				<Card.Root>
-					<Card.Header class="flex flex-row items-center justify-between space-x-2 p-2">
-						<div class="flex flex-row gap-2">
-							<PiggyBank class="h-6 w-6" strokeWidth={1.5} />
-							<Card.Title class="text-md">Traded for 452 USD</Card.Title>
-						</div>
-						<span class="text-muted-foreground pb-1 text-xs"> 2024 April 6, 14:34 </span>
-					</Card.Header>
-				</Card.Root>
+				{#if transactions.length === 0}
+					<h2>No transactions have been made by this buddy.</h2>
+				{/if}
 
-				<Card.Root>
-					<Card.Header class="flex flex-row items-center justify-between p-2">
-						<div class="flex flex-row gap-2">
-							<Handshake class="h-6 w-6" strokeWidth={1.5} />
-							<Card.Title class="text-md">Sold 0.001 BTC</Card.Title>
-						</div>
-						<span class="text-muted-foreground pb-1 text-xs"> 2024 April 6, 14:34 </span>
-					</Card.Header>
-				</Card.Root>
+				{#each transactions as transaction}
+					<Transaction tx={transaction} />
+				{/each}
 			</Card.Content>
 		</Card.Root>
 	</div>

@@ -27,3 +27,10 @@ interface TransactionSchema {
 	config: number;
 	status: string;
 }
+
+interface StatSchema {
+	profit: number;
+	numberTransactions: number;
+	totalBought: number;
+	totalSold: number;
+}
