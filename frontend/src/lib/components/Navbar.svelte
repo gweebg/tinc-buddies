@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { toggleMode, mode } from 'mode-watcher';
-	import { Moon, Sun, Menu, Github } from 'lucide-svelte';
+	import { Moon, Sun, Menu, Github, DollarSign } from 'lucide-svelte';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import * as Sheet from '$lib/components/ui/sheet';
 
 	export let section: string;
+	export let balance: number;
 
 	const sections: Sections = {
 		Home: '/',
@@ -30,6 +31,10 @@
 						<Button builders={[builder]} variant="ghost" size="icon">
 							<Menu strokeWidth={1.5} />
 						</Button>
+						<DollarSign size={16} />
+						<p class="text-foreground hover:text-foreground/80 text-sm transition-colors">
+							{balance}
+						</p>
 					</Sheet.Trigger>
 
 					<Sheet.Content side="left">
@@ -130,6 +135,10 @@
 
 				<Button variant="outline">
 					<p class="text-foreground hover:text-foreground/80 transition-colors">Deposit</p>
+				</Button>
+
+				<Button variant="outline">
+					<p class="text-foreground hover:text-foreground/80 transition-colors">Withdraw</p>
 				</Button>
 			</div>
 		</div>

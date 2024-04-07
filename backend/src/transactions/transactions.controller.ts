@@ -13,7 +13,7 @@ export class TransactionsController {
 
   @Post()
   create(@Body() transactionData: Transaction): Promise<Transaction> {
-    return this.transactionsService.create(transactionData);
+    return this.transactionsService.create(transactionData, transactionData.config);
   }
 
   @Get('user/:userId')

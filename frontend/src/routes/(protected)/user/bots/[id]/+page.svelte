@@ -10,7 +10,9 @@
 		DollarSign,
 		Handshake,
 		Pencil,
-		PiggyBank
+		PiggyBank,
+		X,
+		Save
 	} from 'lucide-svelte';
 
 	import type { PageData } from './$types';
@@ -27,19 +29,45 @@
 
 	const { config, transactions, stats } = data;
 
+	let editedConfig = config;
+
 	const filterFields = ['id', 'activated', 'created_at', 'budget', 'updated_at'];
-	const filteredConfig = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
+	const filteredConfig = Object.entries(editedConfig).filter(
+		([key, _]) => !filterFields.includes(key)
+	);
+	const originalFiltered = Object.entries(config).filter(([key, _]) => !filterFields.includes(key));
 
 	const back = () => {
 		goto('/user/bots');
 	};
 
+	let editMode = false;
 	const edit = () => {
-		goto(`/user/bots/${config.id}/edit`);
+		editMode = !editMode;
 	};
 
 	const carouselOptions: CarouselOptions = {
 		loop: true
+	};
+
+	const submit = async () => {
+		let response;
+		try {
+			response = await fetch('/api/edit', {
+				method: 'POST',
+				body: JSON.stringify(editedConfig)
+			});
+
+			if (!response.ok) {
+				console.error(response);
+				return;
+			}
+		} catch (err) {
+			console.error(response);
+			return;
+		} finally {
+			location.reload();
+		}
 	};
 </script>
 
@@ -140,28 +168,64 @@
 			</Card.Content>
 		</Card.Root>
 
-		<Card.Root class="w-full">
-			<Card.Header>
-				<div class="flex flex-row justify-between">
-					<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Configuration</h1>
-					<Button class="gap-2" size="sm" on:click={edit}>
-						<Pencil strokeWidth={1.5} size={20} /> Edit
-					</Button>
-				</div>
-			</Card.Header>
-			<Card.Content>
-				{#each filteredConfig as [key, value]}
-					<div class="mb-2 flex flex-row gap-2">
-						<div class="flex w-full max-w-sm flex-col gap-1.5">
-							<Label for={key}>
-								{toTitle(key)}:
-							</Label>
-							<Input class="flex w-full flex-1" type="email" id={key} {value} disabled />
+		<form action="?/edit" method="POST">
+			<Card.Root class="w-full">
+				<Card.Header>
+					<div class="flex flex-row justify-between">
+						<h1 class="scroll-m-20 text-2xl font-bold tracking-tight">Configuration</h1>
+
+						<div>
+							{#if editMode}
+								<Button
+									class="gap-2"
+									size="sm"
+									on:click={() => {
+										editMode = false;
+									}}
+								>
+									<X strokeWidth={1.5} size={20} />
+								</Button>
+							{/if}
+
+							{#if !editMode}
+								<Button class="gap-2" size="sm" on:click={edit}>
+									<Pencil strokeWidth={1.5} size={20} /> Edit
+								</Button>
+							{:else}
+								<Button class="gap-2" size="sm" on:click={submit}>
+									<Save strokeWidth={1.5} size={20} /> Save
+								</Button>
+							{/if}
 						</div>
 					</div>
-				{/each}
-			</Card.Content>
-		</Card.Root>
+				</Card.Header>
+				<Card.Content>
+					{#if editMode}
+						{#each filteredConfig as [key, value]}
+							<div class="mb-2 flex flex-row gap-2">
+								<div class="flex w-full max-w-sm flex-col gap-1.5">
+									<Label for={key}>
+										{toTitle(key)}:
+									</Label>
+									<Input class="flex w-full flex-1" id={key} bind:value={editedConfig[key]} />
+								</div>
+							</div>
+						{/each}
+					{:else}
+						{#each originalFiltered as [key, value]}
+							<div class="mb-2 flex flex-row gap-2">
+								<div class="flex w-full max-w-sm flex-col gap-1.5">
+									<Label for={key}>
+										{toTitle(key)}:
+									</Label>
+									<Input class="flex w-full flex-1" id={key} {value} disabled />
+								</div>
+							</div>
+						{/each}
+					{/if}
+				</Card.Content>
+			</Card.Root>
+		</form>
 
 		<Card.Root class="w-full">
 			<Card.Header>
