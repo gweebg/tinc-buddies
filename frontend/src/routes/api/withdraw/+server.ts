@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({ request }) => {
 	let response;
 	try {
-		response = await fetch('http://backend-app:3000/accounts/deposit/1/100', {
+		response = await fetch('http://backend-app:3000/accounts/withdraw/1/100', {
 			method: 'PUT'
 		});
 

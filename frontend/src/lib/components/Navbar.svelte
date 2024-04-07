@@ -17,6 +17,44 @@
 	const redirectGithub = () => {
 		window.open('https://github.com/gweebg/tinc-buddy', '_blank');
 	};
+
+	const deposit = async () => {
+		let response;
+		try {
+			response = await fetch('/api/deposit', {
+				method: 'POST'
+			});
+
+			if (!response.ok) {
+				console.error(response);
+				return;
+			}
+		} catch (err) {
+			console.error(response);
+			return;
+		} finally {
+			location.reload();
+		}
+	};
+
+	const withdraw = async () => {
+		let response;
+		try {
+			response = await fetch('/api/withdraw', {
+				method: 'POST'
+			});
+
+			if (!response.ok) {
+				console.error(response);
+				return;
+			}
+		} catch (err) {
+			console.error(response);
+			return;
+		} finally {
+			location.reload();
+		}
+	};
 </script>
 
 <nav
@@ -133,11 +171,11 @@
 					</Tooltip.Content>
 				</Tooltip.Root>
 
-				<Button variant="outline">
+				<Button variant="outline" on:click={deposit}>
 					<p class="text-foreground hover:text-foreground/80 transition-colors">Deposit</p>
 				</Button>
 
-				<Button variant="outline">
+				<Button variant="outline" on:click={withdraw}>
 					<p class="text-foreground hover:text-foreground/80 transition-colors">Withdraw</p>
 				</Button>
 			</div>
