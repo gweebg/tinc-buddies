@@ -6,7 +6,7 @@ Developed for [Hackathon Bugsbyte 2024](https://bugsbyte.org/) by:
 + Guilherme Sampaio ([@gweebg](https://github.com/gweebg))
 + Jorge Lima ([@LCMJ21](https://github.com/LCMJ21))
 + João Martins ([@sucodlaranja](https://github.com/sucodlaranja))
-+ Rúben Santso ([@rsaSantos](https://github.com/rsaSantos))
++ Rúben Santos ([@rsaSantos](https://github.com/rsaSantos))
 
 # Running Instructions
 
